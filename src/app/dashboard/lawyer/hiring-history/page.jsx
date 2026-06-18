@@ -21,7 +21,7 @@ export default function LawyerHiringHistoryPage() {
     try {
       const res = await apiFetch("/api/hirings/lawyer-requests");
       if (res.success) {
-        const mapped = (res.data || []).map((r) => ({
+        const mapped = (res.data.hirings || []).map((r) => ({
           _id: r._id,
           clientName: r.clientName || "Client",
           date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : "N/A",
