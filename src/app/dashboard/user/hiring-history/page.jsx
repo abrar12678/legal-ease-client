@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/auth-client";
-import { toast } from "react-toastify";
 import { ClipboardList, Search, Filter } from "lucide-react";
 
 const STATUS_BADGE = {
@@ -35,13 +34,10 @@ export default function UserHiringHistoryPage() {
             status: h.status,
           }));
           setHirings(mapped);
-        } else if (!cancelled) {
-          toast.error(res.message || "Failed to load hiring history");
         }
       } catch (err) {
-        if (!cancelled) {
-          toast.error("Failed to load hiring history");
-        }
+        // silently handle — no data yet is normal
+      
       } finally {
         if (!cancelled) setLoading(false);
       }

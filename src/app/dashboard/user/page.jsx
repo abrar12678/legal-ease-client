@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, apiFetch } from "@/lib/auth-client";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
 import {
   User,
   Mail,
@@ -40,12 +39,10 @@ export default function UserDashboardPage() {
             date: h.createdAt ? new Date(h.createdAt).toLocaleDateString() : "N/A",
             status: h.status,
           })));
-        } else if (!cancelled) {
-          toast.error(res.message || "Failed to load dashboard data");
         }
       } catch (err) {
         if (!cancelled) {
-          toast.error("Failed to load dashboard data");
+          // silently fail — new users have no data yet
         }
       } finally {
         if (!cancelled) setLoading(false);

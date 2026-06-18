@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiFetch } from "@/lib/auth-client";
-import { toast } from "react-toastify";
 import {
   MessageSquare,
   Edit3,
@@ -35,13 +34,10 @@ export default function UserCommentsPage() {
             date: c.createdAt ? new Date(c.createdAt).toLocaleDateString() : "N/A",
           }));
           setComments(mapped);
-        } else if (!cancelled) {
-          toast.error(res.message || "Failed to load comments");
         }
       } catch (err) {
-        if (!cancelled) {
-          toast.error("Failed to load comments");
-        }
+        // silently handle — no data yet is normal
+      
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -62,17 +58,14 @@ export default function UserCommentsPage() {
         body: JSON.stringify({ text: editText, rating: comments.find((c) => c._id === editingId)?.rating }),
       });
       if (res.success) {
-        toast.success("Comment updated successfully");
         setComments((prev) =>
           prev.map((c) => (c._id === editingId ? { ...c, text: editText } : c))
         );
         setEditingId(null);
         setEditText("");
-      } else {
-        toast.error(res.message || "Failed to update comment");
       }
     } catch (err) {
-      toast.error("Failed to update comment");
+      // silently handle
     }
   };
 
@@ -87,14 +80,11 @@ export default function UserCommentsPage() {
         method: "DELETE",
       });
       if (res.success) {
-        toast.success("Comment deleted successfully");
         setComments((prev) => prev.filter((c) => c._id !== id));
         setDeleteId(null);
-      } else {
-        toast.error(res.message || "Failed to delete comment");
       }
     } catch (err) {
-      toast.error("Failed to delete comment");
+      // silently handle
     }
   };
 
