@@ -211,7 +211,7 @@ export default function SignUpPage() {
                   onClick={() => setShowConfirmPwd(!showConfirmPwd)}
                   className={eyeBtnClass}
                 >
-                  {showConfirmPwd ? <EyeSlash size={16} /> : <Eye size={16} />}
+                  {showConfirmPwd ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
