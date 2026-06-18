@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 const SIDEBAR_LINKS = {
-  client: [
+  user: [
     { label: "My Dashboard", href: "/dashboard/user", icon: LayoutDashboard },
     { label: "Hiring History", href: "/dashboard/user/hiring-history", icon: ClipboardList },
     { label: "My Comments", href: "/dashboard/user/comments", icon: MessageSquare },
@@ -36,14 +36,14 @@ const SIDEBAR_LINKS = {
   ],
 };
 
-export default function DashboardSidebar({ role = "client", isOpen, onClose }) {
+export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;
-  const links = SIDEBAR_LINKS[role] || SIDEBAR_LINKS.client;
+  const links = SIDEBAR_LINKS[role] || SIDEBAR_LINKS.user;
 
-  const handleSignOut = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } });
   };
 
   const sidebarContent = (
@@ -133,7 +133,7 @@ export default function DashboardSidebar({ role = "client", isOpen, onClose }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 bg-black/50 z-40"
+              className="lg:hidden fixed inset-0 bg-black/50 z-40 top-16"
               onClick={onClose}
             />
             <motion.aside
@@ -141,7 +141,7 @@ export default function DashboardSidebar({ role = "client", isOpen, onClose }) {
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="lg:hidden fixed inset-y-0 left-0 top-0 w-72 bg-[#1B2A4A] z-50"
+              className="lg:hidden fixed inset-y-0 left-0 top-16 w-72 bg-[#1B2A4A] z-50 rounded-tr-xl"
             >
               {/* Mobile Close Button */}
               <button

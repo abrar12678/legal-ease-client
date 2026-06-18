@@ -5,4 +5,4 @@ const authClient = createAuthClient({
 });
 
 export default authClient;
-export const { signIn, signUp, useSession, signOut } = authClient;
+export const { signIn, signUp, useSession, signOut, apiFetch } = authClient;

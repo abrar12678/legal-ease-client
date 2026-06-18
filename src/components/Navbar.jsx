@@ -78,7 +78,7 @@ export default function Navbar() {
   };
 
   const handleSignOut = async () => {
-    await signOut();
+    await signOut({ fetchOptions: { onSuccess: () => { router.push("/"); router.refresh(); } } });
     setDropdownOpen(false);
     setMobileOpen(false);
   };
