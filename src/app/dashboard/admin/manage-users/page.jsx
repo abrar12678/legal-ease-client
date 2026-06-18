@@ -23,6 +23,11 @@ const ROLE_COLORS = {
 
 const ROLES = ["client", "lawyer", "admin"];
 
+// Backend stores "user" but we display "client"
+function displayRole(role) {
+  return role === "user" ? "client" : role;
+}
+
 export default function ManageUsersPage() {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
@@ -37,13 +42,17 @@ export default function ManageUsersPage() {
       try {
         const res = await apiFetch("/api/admin/users");
         if (res.success) {
-          setUsers(res.data.users || []);
+          const rawUsers = res.data.users || [];
+          // Normalize "user" → "client" for consistent display & filtering
+          const normalized = rawUsers.map((u) => ({
+            ...u,
+            role: displayRole(u.role),
+          }));
+          setUsers(normalized);
           setRoleCounts(res.data.roleCounts || {});
-        } else {
-          toast.error("Failed to load users");
         }
       } catch (err) {
-        toast.error("Failed to load users");
+        // silently handle
       } finally {
         setLoading(false);
       }
@@ -108,7 +117,7 @@ export default function ManageUsersPage() {
   };
 
   const filtered = users.filter((u) => {
-    const matchRole = roleFilter === "all" || u.role === roleFilter;
+    const matchRole = roleFilter === "all" || displayRole(u.role) === roleFilter;
     const matchSearch =
       !searchQuery ||
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -195,9 +204,17 @@ export default function ManageUsersPage() {
                   <tr key={user._id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-[#1B2A4A]/5 flex items-center justify-center text-[#1B2A4A] text-sm font-bold shrink-0">
-                          {user.name.charAt(0)}
-                        </div>
+                        {user.image ? (
+                          <img
+                            src={user.image}
+                            alt={user.name}
+                            className="w-9 h-9 rounded-full object-cover shrink-0"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 rounded-full bg-[#1B2A4A]/5 flex items-center justify-center text-[#1B2A4A] text-sm font-bold shrink-0">
+                            {user.name.charAt(0)}
+                          </div>
+                        )}
                         <div className="min-w-0">
                           <span className="text-sm font-medium text-[#1B2A4A] block truncate">{user.name}</span>
                           {user.isBlocked && (

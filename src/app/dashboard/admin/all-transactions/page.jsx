@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { apiFetch } from "@/lib/auth-client";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { CreditCard, Search, DollarSign } from "lucide-react";
 
@@ -23,15 +22,13 @@ export default function AllTransactionsPage() {
   const fetchTransactions = async (status = "all") => {
     try {
       const query = status !== "all" ? `?status=${status}` : "";
-      const res = await apiFetch(`/api/transactions${query}`);
+      const res = await apiFetch(`/api/admin/transactions${query}`);
       if (res.success) {
         setTransactions(res.data.transactions || []);
         setTotalAmount(res.data.totalAmount || 0);
-      } else {
-        toast.error("Failed to load transactions");
       }
     } catch (err) {
-      toast.error("Failed to load transactions");
+      // silently handle
     } finally {
       setLoading(false);
     }
@@ -44,7 +41,7 @@ export default function AllTransactionsPage() {
   const filtered = transactions.filter((t) => {
     const matchSearch =
       !searchQuery ||
-      (t._id && t._id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (t.transactionId && t.transactionId.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (t.clientEmail && t.clientEmail.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (t.lawyerEmail && t.lawyerEmail.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchSearch;
@@ -97,7 +94,7 @@ export default function AllTransactionsPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            {["all", "completed", "refunded", "pending", "failed"].map((s) => (
+            {["all", "completed", "pending", "failed"].map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
@@ -138,12 +135,16 @@ export default function AllTransactionsPage() {
                 </tr>
               ) : (
                 filtered.map((txn) => (
-                  <tr key={txn._id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 text-sm font-mono text-[#D4A843] font-semibold">{txn._id ? txn._id.substring(0, 12) + "..." : "N/A"}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{txn.clientEmail}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">{txn.lawyerEmail}</td>
-                    <td className="px-6 py-4 text-sm font-bold text-[#1B2A4A]">${txn.amount}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500 hidden sm:table-cell">{txn.createdAt ? new Date(txn.createdAt).toLocaleDateString() : "N/A"}</td>
+                  <tr key={txn.transactionId} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-6 py-4 text-sm font-mono text-[#D4A843] font-semibold">
+                      {txn.transactionId ? txn.transactionId.substring(0, 12) + "..." : "N/A"}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{txn.clientEmail || "N/A"}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">{txn.lawyerEmail || "N/A"}</td>
+                    <td className="px-6 py-4 text-sm font-bold text-[#1B2A4A]">${(txn.amount || 0).toLocaleString()}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500 hidden sm:table-cell">
+                      {txn.createdAt ? new Date(txn.createdAt).toLocaleDateString() : "N/A"}
+                    </td>
                     <td className="px-6 py-4">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold capitalize ${STATUS_BADGE[txn.status] || "bg-gray-100 text-gray-700"}`}>
                         {txn.status}
@@ -156,7 +157,9 @@ export default function AllTransactionsPage() {
           </table>
         </div>
         <div className="px-6 py-3 border-t border-gray-100 bg-gray-50/50">
-          <p className="text-xs text-gray-400">Showing {filtered.length} of {transactions.length} transactions &middot; Filtered Total: ${filteredTotal.toLocaleString()}</p>
+          <p className="text-xs text-gray-400">
+            Showing {filtered.length} of {transactions.length} transactions &middot; Filtered Total: ${filteredTotal.toLocaleString()}
+          </p>
         </div>
       </motion.div>
     </div>

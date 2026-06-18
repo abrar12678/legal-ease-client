@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useSession, apiFetch } from "@/lib/auth-client";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -38,8 +37,6 @@ export default function AdminDashboardPage() {
 
         if (statsRes.success) {
           setStats(statsRes.data);
-        } else {
-          toast.error("Failed to load stats");
         }
 
         if (usersRes.success) {
@@ -48,11 +45,9 @@ export default function AdminDashboardPage() {
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
           setRecentUsers(sorted.slice(0, 5));
-        } else {
-          toast.error("Failed to load recent users");
         }
       } catch (err) {
-        toast.error("Failed to load dashboard data");
+        // silently handle
       } finally {
         setLoading(false);
       }
