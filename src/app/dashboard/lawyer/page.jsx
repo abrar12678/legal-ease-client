@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useSession, apiFetch } from "@/lib/auth-client";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
 import Link from "next/link";
 import {
   User,
@@ -56,14 +55,11 @@ export default function LawyerDashboardPage() {
               { label: "Completed", value: completed, icon: CheckCircle2, color: "bg-green-50", iconColor: "text-green-600" },
               { label: "Total Revenue", value: `$${revenue.toLocaleString()}`, icon: DollarSign, color: "bg-blue-50", iconColor: "text-blue-600" },
             ]);
-          } else {
-            toast.error(requestsRes.message || "Failed to load requests");
           }
         }
       } catch (err) {
-        if (!cancelled) {
-          toast.error("Failed to load dashboard data");
-        }
+        // silently handle — no data yet is normal
+      
       } finally {
         if (!cancelled) setLoading(false);
       }

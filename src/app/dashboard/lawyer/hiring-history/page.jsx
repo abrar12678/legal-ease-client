@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/auth-client";
-import { toast } from "react-toastify";
 import { ClipboardList, Check, X as XIcon, Search, Clock } from "lucide-react";
 
 const STATUS_BADGE = {
@@ -30,11 +29,9 @@ export default function LawyerHiringHistoryPage() {
           fee: r.budget ?? 0,
         }));
         setRequests(mapped);
-      } else {
-        toast.error(res.message || "Failed to load hiring requests");
       }
     } catch (err) {
-      toast.error("Failed to load hiring requests");
+      // silently handle
     } finally {
       setLoading(false);
     }
@@ -50,13 +47,10 @@ export default function LawyerHiringHistoryPage() {
         method: "PATCH",
       });
       if (res.success) {
-        toast.success(`Request ${action}ed successfully`);
         await fetchRequests();
-      } else {
-        toast.error(res.message || `Failed to ${action} request`);
       }
     } catch (err) {
-      toast.error(`Failed to ${action} request`);
+      // silently handle
     }
   };
 
