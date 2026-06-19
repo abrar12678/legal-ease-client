@@ -8,6 +8,7 @@ import { ClipboardList, Check, X as XIcon, Search, Clock } from "lucide-react";
 const STATUS_BADGE = {
   pending: "bg-amber-100 text-amber-700",
   accepted: "bg-blue-100 text-blue-700",
+  paid: "bg-purple-100 text-purple-700",
   completed: "bg-green-100 text-green-700",
   rejected: "bg-red-100 text-red-600",
 };

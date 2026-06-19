@@ -40,6 +40,10 @@ const nextConfig = {
         source: "/api/users/:path*",
         destination: "http://localhost:5000/api/users/:path*",
       },
+      {
+        source: "/api/payments/:path*",
+        destination: "http://localhost:5000/api/payments/:path*",
+      },
     ];
   },
 };

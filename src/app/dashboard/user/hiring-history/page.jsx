@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/auth-client";
-import { ClipboardList, Search, Filter } from "lucide-react";
+import { ClipboardList, Search, Filter, CreditCard, Loader2 } from "lucide-react";
 
 const STATUS_BADGE = {
   pending: "bg-amber-100 text-amber-700",
@@ -18,6 +18,7 @@ export default function UserHiringHistoryPage() {
   const [hirings, setHirings] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [payingId, setPayingId] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -35,9 +36,8 @@ export default function UserHiringHistoryPage() {
           }));
           setHirings(mapped);
         }
-      } catch (err) {
-        // silently handle — no data yet is normal
-      
+      } catch {
+        // silently handle
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -45,6 +45,24 @@ export default function UserHiringHistoryPage() {
     fetchHirings();
     return () => { cancelled = true; };
   }, []);
+
+  const handlePay = async (hiringId) => {
+    setPayingId(hiringId);
+    try {
+      const res = await apiFetch("/api/payments/create-checkout", {
+        method: "POST",
+        body: JSON.stringify({ hiringId }),
+      });
+
+      if (res.success && res.data?.url) {
+        window.location.href = res.data.url;
+      }
+    } catch {
+      // silently handle
+    } finally {
+      setPayingId(null);
+    }
+  };
 
   const filtered = hirings.filter((h) => {
     const matchStatus = statusFilter === "all" || h.status === statusFilter;
@@ -98,7 +116,7 @@ export default function UserHiringHistoryPage() {
           {/* Status Filter */}
           <div className="flex items-center gap-2">
             <Filter size={16} className="text-gray-400" />
-            {["all", "pending", "accepted", "completed", "rejected", "paid"].map((s) => (
+            {["all", "pending", "accepted", "paid", "rejected"].map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
@@ -132,12 +150,13 @@ export default function UserHiringHistoryPage() {
                 <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Fee</th>
                 <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Date</th>
                 <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-16 text-center">
+                  <td colSpan={7} className="px-6 py-16 text-center">
                     <ClipboardList size={40} className="mx-auto text-gray-300 mb-3" />
                     <p className="text-gray-500 font-medium">No hiring records found</p>
                     <p className="text-gray-400 text-sm mt-1">Try adjusting your filters</p>
@@ -152,9 +171,33 @@ export default function UserHiringHistoryPage() {
                     <td className="px-6 py-4 text-sm font-semibold text-[#1B2A4A]">${hire.fee}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 hidden sm:table-cell">{hire.date}</td>
                     <td className="px-6 py-4">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold capitalize ${STATUS_BADGE[hire.status]}`}>
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold capitalize ${STATUS_BADGE[hire.status] || "bg-gray-100 text-gray-600"}`}>
                         {hire.status}
                       </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      {hire.status === "accepted" && (
+                        <button
+                          onClick={() => handlePay(hire._id)}
+                          disabled={payingId === hire._id}
+                          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-[#D4A843] text-[#1B2A4A] hover:bg-[#c49a38] rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                        >
+                          {payingId === hire._id ? (
+                            <Loader2 size={14} className="animate-spin" />
+                          ) : (
+                            <CreditCard size={14} />
+                          )}
+                          {payingId === hire._id ? "Redirecting..." : "Pay Now"}
+                        </button>
+                      )}
+                      {hire.status === "paid" && (
+                        <span className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-purple-100 text-purple-700 rounded-lg">
+                          Paid
+                        </span>
+                      )}
+                      {hire.status !== "accepted" && hire.status !== "paid" && (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
                     </td>
                   </tr>
                 ))

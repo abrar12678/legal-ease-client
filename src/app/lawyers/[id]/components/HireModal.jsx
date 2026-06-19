@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, AlertCircle, User } from "lucide-react";
 import Link from "next/link";
-import { useSession } from "@/lib/auth-client";
+import { useSession, apiFetch } from "@/lib/auth-client";
 
 export default function HireModal({ lawyer, isOpen, onClose }) {
   const { data: session, isPending } = useSession();
@@ -16,10 +16,24 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
   const handleHire = async () => {
     if (!canHire) return;
     setSubmitting(true);
-    // TODO: Connect to real POST /api/hirings when Stripe/payment is integrated
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setSubmitting(false);
-    onClose();
+
+    try {
+      const res = await apiFetch("/api/hirings", {
+        method: "POST",
+        body: JSON.stringify({
+          lawyerId: lawyer.id,
+          budget: lawyer.hourlyRate,
+        }),
+      });
+
+      if (res.success) {
+        onClose();
+      }
+    } catch {
+      // silently handle
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
