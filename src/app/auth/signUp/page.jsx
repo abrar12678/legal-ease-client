@@ -20,7 +20,7 @@ export default function SignUpPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("client");
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [error, setError] = useState("");
@@ -277,15 +277,15 @@ export default function SignUpPage() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => setRole("user")}
+                  onClick={() => setRole("client")}
                   className={`flex flex-col items-center gap-1.5 p-4 rounded-xl border-2 transition-all duration-200 ${
-                    role === "user"
+                    role === "client"
                       ? "border-[#1B2A4A] bg-[#1B2A4A]/[0.04]"
                       : "border-gray-200 hover:border-gray-300 bg-white"
                   }`}
                 >
-                  <User size={22} className={role === "user" ? "text-[#1B2A4A]" : "text-gray-400"} />
-                  <span className={`text-sm font-semibold ${role === "user" ? "text-[#1B2A4A]" : "text-gray-600"}`}>
+                  <User size={22} className={role === "client" ? "text-[#1B2A4A]" : "text-gray-400"} />
+                  <span className={`text-sm font-semibold ${role === "client" ? "text-[#1B2A4A]" : "text-gray-600"}`}>
                     Client
                   </span>
                   <span className="text-xs text-gray-400 text-center leading-tight">
@@ -326,11 +326,11 @@ export default function SignUpPage() {
               />
               <span className="text-sm text-gray-500 leading-relaxed">
                 I agree to the{" "}
-                <Link href="#" className="text-[#1B2A4A] font-medium hover:underline">
+                <Link href="/terms" className="text-[#1B2A4A] font-medium hover:underline">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link href="#" className="text-[#1B2A4A] font-medium hover:underline">
+                <Link href="/privacy" className="text-[#1B2A4A] font-medium hover:underline">
                   Privacy Policy
                 </Link>
               </span>

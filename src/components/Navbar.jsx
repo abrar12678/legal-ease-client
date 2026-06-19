@@ -13,6 +13,9 @@ import {
   LogOut,
   User,
   LayoutDashboard,
+  Moon,
+  Sun,
+  Heart,
 } from "lucide-react";
 
 const NAV_LINKS = [
@@ -21,11 +24,12 @@ const NAV_LINKS = [
 ];
 
 const DASHBOARD_LINKS = {
-  user: [
-    { label: "My Dashboard", href: "/dashboard/user", icon: LayoutDashboard },
-    { label: "Hiring History", href: "/dashboard/user/hiring-history", icon: User },
-    { label: "My Comments", href: "/dashboard/user/comments", icon: User },
-    { label: "Update Profile", href: "/dashboard/user/update-profile", icon: User },
+  client: [
+    { label: "My Dashboard", href: "/dashboard/client", icon: LayoutDashboard },
+    { label: "My Shortlist", href: "/dashboard/client/shortlist", icon: Heart },
+    { label: "Hiring History", href: "/dashboard/client/hiring-history", icon: User },
+    { label: "My Comments", href: "/dashboard/client/comments", icon: User },
+    { label: "Update Profile", href: "/dashboard/client/update-profile", icon: User },
   ],
   lawyer: [
     { label: "My Dashboard", href: "/dashboard/lawyer", icon: LayoutDashboard },
@@ -45,11 +49,32 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
   const { data: session, isPending } = useSession();
   const pathname = usePathname();
   const router = useRouter();
   const dropdownRef = useRef(null);
   const user = session?.user;
+
+  useEffect(() => {
+    // Initialize dark mode from localStorage
+    const saved = localStorage.getItem("darkMode");
+    if (saved === "true") {
+      setDarkMode(true);
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    localStorage.setItem("darkMode", String(next));
+    if (next) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -84,15 +109,15 @@ export default function Navbar() {
   };
 
   const dashboardItems = user?.role
-    ? DASHBOARD_LINKS[user.role] || DASHBOARD_LINKS.user
+    ? DASHBOARD_LINKS[user.role] || DASHBOARD_LINKS.client
     : [];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-md"
-          : "bg-white"
+          ? "dark:bg-slate-800/95 bg-white/95 backdrop-blur-md shadow-md"
+          : "dark:bg-slate-800 bg-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,7 +131,7 @@ export default function Navbar() {
                 <path d="M2 12l10 5 10-5" />
               </svg>
             </div>
-            <span className="text-xl font-bold text-[#1B2A4A] tracking-tight">
+            <span className="text-xl font-bold text-[#1B2A4A] dark:text-white tracking-tight">
               Legal<span className="text-[#D4A843]">Ease</span>
             </span>
           </Link>
@@ -188,11 +213,19 @@ export default function Navbar() {
             </form>
           </div>
 
-          {/* Desktop: Auth Buttons */}
+          {/* Desktop: Auth Buttons + Dark Mode */}
           <div className="hidden md:flex items-center gap-2">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+              title={darkMode ? "Light Mode" : "Dark Mode"}
+            >
+              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             {user ? (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600 font-medium">
+            <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">
                   {user.name}
                 </span>
                 <button
@@ -239,7 +272,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-white border-t border-gray-100"
+            className="md:hidden overflow-hidden dark:bg-slate-800 bg-white border-t border-gray-100 dark:border-slate-700"
           >
             <div className="px-4 py-4 space-y-3">
               {/* Mobile Search */}
@@ -304,7 +337,16 @@ export default function Navbar() {
                 </>
               )}
 
-              {!user && (
+                  <div className="border-t border-gray-100 dark:border-slate-700 pt-3 space-y-2">
+                    <button
+                      onClick={toggleDarkMode}
+                      className="flex items-center gap-2 px-3 py-2.5 w-full text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                    >
+                      {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+                      {darkMode ? "Light Mode" : "Dark Mode"}
+                    </button>
+                  </div>
+                  {!user && (
                 <div className="border-t border-gray-100 pt-3 space-y-2">
                   <Link
                     href="/auth/signIn"

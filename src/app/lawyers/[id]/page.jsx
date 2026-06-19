@@ -21,6 +21,8 @@ import {
   Globe,
   Briefcase,
   Loader2,
+  Heart,
+  BadgeCheck,
 } from "lucide-react";
 import HireModal from "./components/HireModal";
 
@@ -100,6 +102,9 @@ export default function LawyerDetailsPage() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hireModalOpen, setHireModalOpen] = useState(false);
+  const [isHired, setIsHired] = useState(false);
+  const [isShortlisted, setIsShortlisted] = useState(false);
+  const [shortlistLoading, setShortlistLoading] = useState(false);
 
   // Comment form state
   const [reviewText, setReviewText] = useState("");
@@ -131,6 +136,34 @@ export default function LawyerDetailsPage() {
       cancelled = true;
     };
   }, [params.id]);
+
+  // Fetch hired/shortlist status for logged-in users
+  useEffect(() => {
+    if (!isPending && user?.role === "client" && params.id) {
+      apiFetch(`/api/lawyers/${params.id}/hired-status`).then((res) => {
+        if (res.success) {
+          setIsHired(res.data.isHired);
+          setIsShortlisted(res.data.isShortlisted);
+        }
+      }).catch(() => {});
+    }
+  }, [isPending, user, params.id]);
+
+  const handleToggleShortlist = async () => {
+    if (!user || user.role !== "client" || shortlistLoading) return;
+    setShortlistLoading(true);
+    try {
+      if (isShortlisted) {
+        const res = await apiFetch(`/api/shortlist/${params.id}`, { method: "DELETE" });
+        if (res.success) { setIsShortlisted(false); toast.info("Removed from shortlist"); }
+      } else {
+        const res = await apiFetch("/api/shortlist", { method: "POST", body: JSON.stringify({ lawyerId: params.id }) });
+        if (res.success) { setIsShortlisted(true); toast.success("Added to shortlist"); }
+        else { toast.error(res.message || "Failed"); }
+      }
+    } catch { toast.error("Failed to update shortlist"); }
+    finally { setShortlistLoading(false); }
+  };
 
   const handleSubmitReview = async () => {
     if (!reviewText.trim() || reviewRating === 0) return;
@@ -270,6 +303,11 @@ export default function LawyerDetailsPage() {
                   >
                     {lawyer.status === "available" ? "Available" : "Busy"}
                   </span>
+                  {isHired && (
+                    <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-green-500 text-white">
+                      <BadgeCheck size={12} /> Hired
+                    </span>
+                  )}
                 </div>
 
                 <p className="text-[#D4A843] font-semibold text-lg mb-4">
@@ -338,23 +376,39 @@ export default function LawyerDetailsPage() {
                   </div>
                 </div>
 
-                {/* Hire Button */}
-                {lawyer.status === "available" ? (
-                  <button
-                    onClick={() => setHireModalOpen(true)}
-                    className="inline-flex items-center gap-2 bg-[#1B2A4A] hover:bg-[#243A5E] text-white font-semibold px-7 py-3 rounded-xl transition-colors text-sm"
-                  >
-                    <Shield size={18} />
-                    Hire {lawyer.name?.split(" ")[0]}
-                  </button>
-                ) : (
-                  <button
-                    disabled
-                    className="inline-flex items-center gap-2 bg-gray-300 text-gray-600 font-semibold px-7 py-3 rounded-xl cursor-not-allowed text-sm"
-                  >
-                    Currently Unavailable
-                  </button>
-                )}
+                {/* Hire Button + Shortlist */}
+                <div className="flex items-center gap-3">
+                  {user?.role === "client" && (
+                    <button
+                      onClick={handleToggleShortlist}
+                      disabled={shortlistLoading}
+                      className={`w-11 h-11 flex items-center justify-center rounded-xl border transition-all ${
+                        isShortlisted
+                          ? "border-red-200 bg-red-50 text-red-500"
+                          : "border-gray-200 text-gray-400 hover:border-red-200 hover:text-red-400 hover:bg-red-50"
+                      }`}
+                      title={isShortlisted ? "Remove from shortlist" : "Add to shortlist"}
+                    >
+                      <Heart size={18} className={isShortlisted ? "fill-red-500" : ""} />
+                    </button>
+                  )}
+                  {lawyer.status === "available" ? (
+                    <button
+                      onClick={() => setHireModalOpen(true)}
+                      className="inline-flex items-center gap-2 bg-[#1B2A4A] hover:bg-[#243A5E] text-white font-semibold px-7 py-3 rounded-xl transition-colors text-sm"
+                    >
+                      <Shield size={18} />
+                      Hire {lawyer.name?.split(" ")[0]}
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className="inline-flex items-center gap-2 bg-gray-300 text-gray-600 font-semibold px-7 py-3 rounded-xl cursor-not-allowed text-sm"
+                    >
+                      Currently Unavailable
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -532,7 +586,7 @@ export default function LawyerDetailsPage() {
           )}
 
           {/* Add Review (only for logged-in clients) */}
-          {user && user.role === "user" && (
+          {user && user.role === "client" && (
             <div className="mt-6 pt-6 border-t border-gray-100">
               <p className="text-sm text-gray-500 mb-3">
                 {comments.length > 0

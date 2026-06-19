@@ -23,9 +23,11 @@ const ROLE_COLORS = {
 
 const ROLES = ["client", "lawyer", "admin"];
 
-// Backend stores "user" but we display "client"
+// Display role labels (DB values → display names)
+const ROLE_LABELS = { client: "Client", lawyer: "Lawyer", admin: "Admin" };
+
 function displayRole(role) {
-  return role === "user" ? "client" : role;
+  return ROLE_LABELS[role] || role;
 }
 
 export default function ManageUsersPage() {
@@ -42,13 +44,7 @@ export default function ManageUsersPage() {
       try {
         const res = await apiFetch("/api/admin/users");
         if (res.success) {
-          const rawUsers = res.data.users || [];
-          // Normalize "user" → "client" for consistent display & filtering
-          const normalized = rawUsers.map((u) => ({
-            ...u,
-            role: displayRole(u.role),
-          }));
-          setUsers(normalized);
+          setUsers(res.data.users || []);
           setRoleCounts(res.data.roleCounts || {});
         }
       } catch (err) {
@@ -117,7 +113,7 @@ export default function ManageUsersPage() {
   };
 
   const filtered = users.filter((u) => {
-    const matchRole = roleFilter === "all" || displayRole(u.role) === roleFilter;
+    const matchRole = roleFilter === "all" || u.role === roleFilter;
     const matchSearch =
       !searchQuery ||
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -171,7 +167,7 @@ export default function ManageUsersPage() {
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
-                {r} {r !== "all" && `(${roleCounts[r] || 0})`}
+                {r === "all" ? "All" : displayRole(r)} {r !== "all" && `(${roleCounts[r] || 0})`}
               </button>
             ))}
           </div>
@@ -225,8 +221,8 @@ export default function ManageUsersPage() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500 hidden md:table-cell">{user.email}</td>
                     <td className="px-6 py-4">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold capitalize ${ROLE_COLORS[user.role] || "bg-gray-100 text-gray-700"}`}>
-                        {user.role}
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${ROLE_COLORS[user.role] || "bg-gray-100 text-gray-700"}`}>
+                        {displayRole(user.role)}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500 hidden sm:table-cell">{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A"}</td>
@@ -303,7 +299,7 @@ export default function ManageUsersPage() {
                         : "bg-gray-50 text-gray-700 hover:bg-[#1B2A4A]/5 hover:text-[#1B2A4A]"
                     }`}
                   >
-                    <span className="flex items-center gap-2 capitalize">{role}</span>
+                    <span className="flex items-center gap-2">{displayRole(role)}</span>
                     {users.find((u) => u._id === changeRoleId)?.role === role && (
                       <span className="text-xs text-gray-400">Current</span>
                     )}

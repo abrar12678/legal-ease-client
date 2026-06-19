@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 const ACTIVITY_ICONS = {
-  user: "bg-blue-100 text-blue-600",
+  client: "bg-blue-100 text-blue-600",
   hire: "bg-green-100 text-green-600",
   payment: "bg-purple-100 text-purple-600",
   lawyer: "bg-amber-100 text-amber-600",
@@ -166,7 +166,7 @@ export default function AdminDashboardPage() {
           ) : (
             recentUsers.map((user) => (
               <div key={user._id} className="px-6 py-4 flex items-start gap-4">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${ACTIVITY_ICONS[user.role === "lawyer" ? "lawyer" : "user"]}`}>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${ACTIVITY_ICONS[user.role === "lawyer" ? "lawyer" : "client"]}`}>
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">

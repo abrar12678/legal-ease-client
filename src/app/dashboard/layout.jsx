@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }) {
     ? "admin"
     : pathname.includes("/lawyer")
     ? "lawyer"
-    : "user";
+    : "client";
 
   return (
     <div className="min-h-screen bg-gray-50/70">

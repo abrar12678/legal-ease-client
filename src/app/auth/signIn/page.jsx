@@ -38,9 +38,9 @@ export default function SignInPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (session?.user) {
-      const role = session.user.role || "user";
+      const role = session.user.role || "client";
       const dashboardMap = {
-        user: "/dashboard/user",
+        client: "/dashboard/client",
         lawyer: "/dashboard/lawyer",
         admin: "/dashboard/admin",
       };
@@ -75,9 +75,9 @@ export default function SignInPage() {
 
       if (data) {
         const userRole =
-          data?.user?.role || data?.session?.user?.role || "user";
+          data?.user?.role || data?.session?.user?.role || "client";
         const dashboardMap = {
-          user: "/dashboard/user",
+          client: "/dashboard/client",
           lawyer: "/dashboard/lawyer",
           admin: "/dashboard/admin",
         };
