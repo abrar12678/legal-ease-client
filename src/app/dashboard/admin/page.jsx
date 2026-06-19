@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: "Manage Users", href: "/dashboard/admin/manage-users", desc: "View and manage all platform users", icon: Users, count: stats?.totalUsers ?? 0 },
-          { label: "All Transactions", href: "/dashboard/admin/all-transactions", desc: "View transaction history", icon: DollarSign, count: "$" + ((stats?.totalRevenue ?? 0) / 1000).toFixed(0) + "K" },
+          { label: "All Transactions", href: "/dashboard/admin/all-transactions", desc: "View transaction history", icon: DollarSign, count: "$" + (stats?.totalRevenue ?? 0).toLocaleString(), sub: (stats?.paidHires ?? 0) + " transactions" },
           { label: "Analytics", href: "/dashboard/admin/analytics", desc: "Detailed platform analytics", icon: Activity, count: (stats?.totalHires ?? 0) + " hires" },
         ].map((item, i) => {
           const Icon = item.icon;
@@ -138,6 +138,7 @@ export default function AdminDashboardPage() {
               <h3 className="text-sm font-bold text-[#1B2A4A] group-hover:text-[#D4A843] transition-colors">{item.label}</h3>
               <p className="text-xs text-gray-400 mt-1">{item.desc}</p>
               <p className="text-lg font-bold text-[#1B2A4A] mt-2">{item.count}</p>
+              {item.sub && <p className="text-xs text-gray-400 mt-0.5">{item.sub}</p>}
             </motion.a>
           );
         })}

@@ -8,7 +8,6 @@ import { CreditCard, Search, DollarSign } from "lucide-react";
 const STATUS_BADGE = {
   completed: "bg-green-100 text-green-700",
   refunded: "bg-red-100 text-red-600",
-  pending: "bg-amber-100 text-amber-700",
   failed: "bg-gray-100 text-gray-600",
 };
 
@@ -94,7 +93,7 @@ export default function AllTransactionsPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            {["all", "completed", "pending", "failed"].map((s) => (
+            {["all", "completed", "failed"].map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
