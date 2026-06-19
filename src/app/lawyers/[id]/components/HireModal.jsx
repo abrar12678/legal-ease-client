@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, AlertCircle, User } from "lucide-react";
 import Link from "next/link";
 import { useSession, apiFetch } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 export default function HireModal({ lawyer, isOpen, onClose }) {
   const { data: session, isPending } = useSession();
@@ -27,10 +28,13 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
       });
 
       if (res.success) {
+        toast.success("Hiring request sent successfully!");
         onClose();
+      } else {
+        toast.error(res.message || "Failed to send hiring request");
       }
-    } catch {
-      // silently handle
+    } catch (err) {
+      toast.error("Failed to send hiring request");
     } finally {
       setSubmitting(false);
     }

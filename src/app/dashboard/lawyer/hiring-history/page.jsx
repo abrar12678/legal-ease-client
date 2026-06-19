@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 import { ClipboardList, Check, X as XIcon, Search, Clock } from "lucide-react";
 
 const STATUS_BADGE = {
@@ -48,10 +49,13 @@ export default function LawyerHiringHistoryPage() {
         method: "PATCH",
       });
       if (res.success) {
+        toast.success(action === "accept" ? "Request accepted successfully" : "Request rejected");
         await fetchRequests();
+      } else {
+        toast.error(res.message || `Failed to ${action} request`);
       }
     } catch (err) {
-      // silently handle
+      toast.error(`Failed to ${action} request`);
     }
   };
 

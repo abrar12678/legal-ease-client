@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession, apiFetch } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -146,6 +147,7 @@ export default function LawyerDetailsPage() {
       });
 
       if (res.success) {
+        toast.success("Review submitted successfully!");
         // Add the new comment to the list optimistically
         const newComment = {
           _id: res.data._id,
@@ -174,9 +176,11 @@ export default function LawyerDetailsPage() {
             rating: Number(newAvg.toFixed(1)),
           };
         });
+      } else {
+        toast.error(res.message || "Failed to submit review");
       }
-    } catch {
-      // silently handle
+    } catch (err) {
+      toast.error("Failed to submit review");
     } finally {
       setSubmittingReview(false);
     }

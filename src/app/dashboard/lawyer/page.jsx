@@ -44,9 +44,9 @@ export default function LawyerDashboardPage() {
 
             const total = reqs.length;
             const pending = reqs.filter((r) => r.status === "pending").length;
-            const completed = reqs.filter((r) => r.status === "completed").length;
+            const completed = reqs.filter((r) => r.status === "completed" || r.status === "paid").length;
             const revenue = reqs
-              .filter((r) => r.status === "completed" || r.status === "accepted")
+              .filter((r) => r.status === "paid")
               .reduce((sum, r) => sum + (r.budget || 0), 0);
 
             setStatCards([
@@ -107,6 +107,7 @@ export default function LawyerDashboardPage() {
       pending: "bg-amber-100 text-amber-700",
       accepted: "bg-blue-100 text-blue-700",
       completed: "bg-green-100 text-green-700",
+      paid: "bg-purple-100 text-purple-700",
       rejected: "bg-red-100 text-red-600",
     };
     return map[status] || "bg-gray-100 text-gray-600";

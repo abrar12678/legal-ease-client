@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession, apiFetch } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import { User, Mail, Camera, Save, CheckCircle, Loader2 } from "lucide-react";
 
 export default function UpdateProfilePage() {
@@ -85,13 +86,16 @@ export default function UpdateProfilePage() {
         }),
       });
       if (res.success) {
+        toast.success("Profile updated successfully");
         setSaved(true);
         // Refresh session so Navbar shows updated name
         refetch();
         setTimeout(() => setSaved(false), 3000);
+      } else {
+        toast.error(res.message || "Failed to update profile");
       }
     } catch (err) {
-      // silently handle
+      toast.error("Failed to update profile. Please try again.");
     } finally {
       setSaving(false);
     }

@@ -48,16 +48,20 @@ export default function UserDashboardPage() {
         if (!cancelled) setLoading(false);
       }
     };
-    fetchData();
+    if (!isPending) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
     return () => { cancelled = true; };
-  }, []);
+  }, [isPending]);
 
   // Compute stats from hirings
   const totalHires = allHirings.length;
   const pendingCount = allHirings.filter((h) => h.status === "pending").length;
-  const completedCount = allHirings.filter((h) => h.status === "completed").length;
+  const completedCount = allHirings.filter((h) => h.status === "completed" || h.status === "paid").length;
   const totalSpent = allHirings
-    .filter((h) => h.status === "paid" || h.status === "completed")
+    .filter((h) => h.status === "paid")
     .reduce((sum, h) => sum + (h.budget || 0), 0);
 
   const statCards = [

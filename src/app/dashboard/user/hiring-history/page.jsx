@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 import { ClipboardList, Search, Filter, CreditCard, Loader2 } from "lucide-react";
 
 const STATUS_BADGE = {
@@ -55,10 +56,13 @@ export default function UserHiringHistoryPage() {
       });
 
       if (res.success && res.data?.url) {
+        toast.info("Redirecting to payment...");
         window.location.href = res.data.url;
+      } else {
+        toast.error(res.message || "Failed to create payment session");
       }
-    } catch {
-      // silently handle
+    } catch (err) {
+      toast.error("Payment failed. Please try again.");
     } finally {
       setPayingId(null);
     }
