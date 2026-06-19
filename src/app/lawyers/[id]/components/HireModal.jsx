@@ -16,6 +16,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
   const handleHire = async () => {
     if (!canHire) return;
     setSubmitting(true);
+    // TODO: Connect to real POST /api/hirings when Stripe/payment is integrated
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setSubmitting(false);
     onClose();
@@ -62,13 +63,19 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
             <div className="px-6 py-5">
               {/* Lawyer Info */}
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl mb-5">
-                <div className="w-14 h-14 rounded-full overflow-hidden shrink-0">
-                  <img
-                    src={lawyer.image}
-                    alt={lawyer.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                {lawyer.image ? (
+                  <div className="w-14 h-14 rounded-full overflow-hidden shrink-0">
+                    <img
+                      src={lawyer.image}
+                      alt={lawyer.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-14 h-14 rounded-full bg-[#1B2A4A]/10 flex items-center justify-center shrink-0 text-[#1B2A4A] text-xl font-bold">
+                    {lawyer.name?.charAt(0)?.toUpperCase() || "L"}
+                  </div>
+                )}
                 <div className="min-w-0">
                   <h4 className="font-semibold text-[#1B2A4A] truncate">
                     {lawyer.name}
