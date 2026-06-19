@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -16,18 +17,18 @@ import {
 } from "lucide-react";
 
 const CATEGORIES = [
-  { label: "Criminal Law", icon: Shield, filter: "criminal", count: 45 },
-  { label: "Corporate Law", icon: Building2, filter: "corporate", count: 38 },
-  { label: "Family Law", icon: Users, filter: "family", count: 52 },
-  { label: "Real Estate", icon: Home, filter: "real-estate", count: 29 },
-  { label: "Immigration", icon: Landmark, filter: "immigration", count: 34 },
-  { label: "Civil Litigation", icon: Scale, filter: "civil", count: 41 },
-  { label: "Tax Law", icon: FileCheck, filter: "tax", count: 22 },
-  { label: "Employment Law", icon: Briefcase, filter: "employment", count: 31 },
-  { label: "Intellectual Property", icon: Gavel, filter: "ip", count: 18 },
-  { label: "Personal Injury", icon: Shield, filter: "injury", count: 37 },
-  { label: "Bankruptcy", icon: Building2, filter: "bankruptcy", count: 15 },
-  { label: "Constitutional Law", icon: Landmark, filter: "constitutional", count: 20 },
+  { label: "Criminal Law", icon: Shield, filter: "criminal" },
+  { label: "Corporate Law", icon: Building2, filter: "corporate" },
+  { label: "Family Law", icon: Users, filter: "family" },
+  { label: "Real Estate", icon: Home, filter: "real-estate" },
+  { label: "Immigration", icon: Landmark, filter: "immigration" },
+  { label: "Civil Litigation", icon: Scale, filter: "civil" },
+  { label: "Tax Law", icon: FileCheck, filter: "tax" },
+  { label: "Employment Law", icon: Briefcase, filter: "employment" },
+  { label: "Intellectual Property", icon: Gavel, filter: "ip" },
+  { label: "Personal Injury", icon: Shield, filter: "injury" },
+  { label: "Bankruptcy", icon: Building2, filter: "bankruptcy" },
+  { label: "Constitutional Law", icon: Landmark, filter: "constitutional" },
 ];
 
 const containerVariants = {
@@ -46,7 +47,53 @@ const itemVariants = {
   },
 };
 
+function getCountForCategory(categoryLabel, categoryCounts) {
+  if (!categoryCounts.length) return 0;
+
+  // Exact match (case-insensitive)
+  const exact = categoryCounts.find(
+    (c) => c.name.toLowerCase() === categoryLabel.toLowerCase()
+  );
+  if (exact) return exact.count;
+
+  // Loose match: API name contains category label or vice versa
+  const loose = categoryCounts.find(
+    (c) =>
+      c.name.toLowerCase().includes(categoryLabel.toLowerCase()) ||
+      categoryLabel.toLowerCase().includes(c.name.toLowerCase())
+  );
+  if (loose) return loose.count;
+
+  return 0;
+}
+
 export default function LegalCategories() {
+  const [categoryCounts, setCategoryCounts] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/api/lawyers/categories");
+        if (res.ok) {
+          const json = await res.json();
+          setCategoryCounts(json.data?.categories || []);
+        }
+      } catch {
+        // silently handle
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const categoriesWithCounts = useMemo(
+    () =>
+      CATEGORIES.map((cat) => ({
+        ...cat,
+        count: getCountForCategory(cat.label, categoryCounts),
+      })),
+    [categoryCounts]
+  );
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +121,7 @@ export default function LegalCategories() {
           viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
         >
-          {CATEGORIES.map((cat) => {
+          {categoriesWithCounts.map((cat) => {
             const Icon = cat.icon;
             return (
               <motion.div
