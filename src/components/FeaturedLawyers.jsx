@@ -35,7 +35,7 @@ export default function FeaturedLawyers() {
         if (res.ok) {
           const data = await res.json();
           if (data.success) {
-            setLawyers(data.data.lawyers || []);
+            setLawyers((data.data.lawyers || []).slice(0, 6));
           }
         }
       } catch (err) {

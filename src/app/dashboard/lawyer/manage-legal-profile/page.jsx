@@ -23,6 +23,7 @@ import {
   Hash,
   Clock,
   Upload,
+  Loader2,
 } from "lucide-react";
 
 const SPECIALIZATIONS = [
@@ -44,6 +45,22 @@ const inputClass =
   "w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1B2A4A]/20 focus:border-[#1B2A4A]/30";
 const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
 
+// Helper: convert DB data → profileForm format (comma-strings)
+const dbToForm = (p, fallbackName = "") => ({
+  name: p.name || fallbackName || "",
+  specialization: p.specialization || "Criminal Law",
+  bio: p.bio || "",
+  hourlyRate: p.hourlyRate?.toString() || "",
+  phone: p.phone || "",
+  barLicenseNumber: p.barLicenseNumber || "",
+  experience: p.experience?.toString() || "",
+  education: Array.isArray(p.education) ? p.education.join(", ") : "",
+  languages: Array.isArray(p.languages) ? p.languages.join(", ") : "",
+  location: p.location || "",
+  city: p.city || "",
+  achievements: Array.isArray(p.achievements) ? p.achievements.join(", ") : "",
+});
+
 export default function ManageLegalProfilePage() {
   const { data: session, isPending, refetch } = useSession();
   const user = session?.user;
@@ -52,6 +69,7 @@ export default function ManageLegalProfilePage() {
   const [showServiceModal, setShowServiceModal] = useState(false);
   const [editingService, setEditingService] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [serviceSaving, setServiceSaving] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -62,6 +80,8 @@ export default function ManageLegalProfilePage() {
   const [imageUploading, setImageUploading] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);
   const fileInputRef = useRef(null);
+  // Store original DB data to compare what changed on save
+  const [originalProfile, setOriginalProfile] = useState(null);
 
   const [profileForm, setProfileForm] = useState({
     name: "",
@@ -85,29 +105,10 @@ export default function ManageLegalProfilePage() {
         const res = await apiFetch("/api/lawyers/profile");
         if (!cancelled && res.success && res.data) {
           const p = res.data;
-          setProfileForm({
-            name: p.name || user?.name || "",
-            specialization: p.specialization || "Criminal Law",
-            bio: p.bio || "",
-            hourlyRate: p.hourlyRate?.toString() || "",
-            phone: p.phone || "",
-            barLicenseNumber: p.barLicenseNumber || "",
-            experience: p.experience?.toString() || "",
-            education: Array.isArray(p.education)
-              ? p.education.join(", ")
-              : p.education || "",
-            languages: Array.isArray(p.languages)
-              ? p.languages.join(", ")
-              : p.languages || "",
-            location: p.location || "",
-            city: p.city || "",
-            achievements: Array.isArray(p.achievements)
-              ? p.achievements.join(", ")
-              : p.achievements || "",
-          });
-          if (p.image) {
-            setProfileImage(p.image);
-          }
+          // Store original DB data for change comparison on save
+          setOriginalProfile(p);
+          setProfileForm(dbToForm(p, user?.name));
+          setProfileImage(p.image || null);
         } else if (!cancelled) {
           setProfileForm((prev) => ({
             ...prev,
@@ -125,8 +126,21 @@ export default function ManageLegalProfilePage() {
         if (!cancelled) setLoading(false);
       }
     };
+
+    const fetchServices = async () => {
+      try {
+        const res = await apiFetch("/api/lawyers/services");
+        if (!cancelled && res.success) {
+          setServices(res.data || []);
+        }
+      } catch {
+        // silently handle
+      }
+    };
+
     if (!isPending) {
       fetchProfile();
+      fetchServices();
     }
     return () => {
       cancelled = true;
@@ -134,17 +148,82 @@ export default function ManageLegalProfilePage() {
   }, [isPending, user]);
 
   const openAddModal = () => {
-    toast.info("Service management coming soon!");
-    return;
+    setEditingService(null);
+    setForm({ name: "", description: "", fee: "", specialization: "Criminal Law" });
+    setShowServiceModal(true);
   };
 
   const openEditModal = (service) => {
-    toast.info("Service management coming soon!");
-    return;
+    setEditingService(service);
+    setForm({
+      name: service.name || "",
+      description: service.description || "",
+      fee: service.fee?.toString() || "",
+      specialization: service.specialization || "Criminal Law",
+    });
+    setShowServiceModal(true);
   };
 
-  const handleDeleteService = (id) => {
-    setServices((prev) => prev.filter((s) => s.id !== id));
+  const handleSaveService = async () => {
+    if (!form.name.trim() || !form.fee) {
+      toast.error("Service name and fee are required");
+      return;
+    }
+
+    setServiceSaving(true);
+    try {
+      const body = {
+        name: form.name.trim(),
+        description: form.description.trim(),
+        fee: Number(form.fee) || 0,
+        specialization: form.specialization,
+      };
+
+      let res;
+      if (editingService) {
+        res = await apiFetch(`/api/lawyers/services/${editingService._id}`, {
+          method: "PUT",
+          body: JSON.stringify(body),
+        });
+      } else {
+        res = await apiFetch("/api/lawyers/services", {
+          method: "POST",
+          body: JSON.stringify(body),
+        });
+      }
+
+      if (res.success) {
+        toast.success(editingService ? "Service updated" : "Service added");
+        setShowServiceModal(false);
+        // Refresh services
+        const servicesRes = await apiFetch("/api/lawyers/services");
+        if (servicesRes.success) {
+          setServices(servicesRes.data || []);
+        }
+      } else {
+        toast.error(res.message || "Failed to save service");
+      }
+    } catch {
+      toast.error("Failed to save service");
+    } finally {
+      setServiceSaving(false);
+    }
+  };
+
+  const handleDeleteService = async (id) => {
+    try {
+      const res = await apiFetch(`/api/lawyers/services/${id}`, {
+        method: "DELETE",
+      });
+      if (res.success) {
+        setServices((prev) => prev.filter((s) => s._id !== id));
+        toast.success("Service deleted");
+      } else {
+        toast.error(res.message || "Failed to delete service");
+      }
+    } catch {
+      toast.error("Failed to delete service");
+    }
     setDeleteId(null);
   };
 
@@ -163,7 +242,7 @@ export default function ManageLegalProfilePage() {
       formData.append("image", file);
 
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API}`,
         { method: "POST", body: formData }
       );
       const data = await res.json();
@@ -182,6 +261,28 @@ export default function ManageLegalProfilePage() {
     }
   };
 
+  // Helper: convert profileForm (comma-strings) → DB format (arrays/numbers)
+  const formToDb = () => ({
+    name: profileForm.name.trim(),
+    specialization: profileForm.specialization,
+    bio: profileForm.bio.trim(),
+    hourlyRate: Number(profileForm.hourlyRate) || 0,
+    phone: profileForm.phone.trim(),
+    barLicenseNumber: profileForm.barLicenseNumber.trim(),
+    experience: Number(profileForm.experience) || 0,
+    education: profileForm.education.trim()
+      ? profileForm.education.split(",").map((s) => s.trim()).filter(Boolean)
+      : [],
+    languages: profileForm.languages.trim()
+      ? profileForm.languages.split(",").map((s) => s.trim()).filter(Boolean)
+      : [],
+    location: profileForm.location.trim(),
+    city: profileForm.city.trim(),
+    achievements: profileForm.achievements.trim()
+      ? profileForm.achievements.split(",").map((s) => s.trim()).filter(Boolean)
+      : [],
+  });
+
   const handleSaveProfile = async () => {
     if (!profileForm.name.trim()) {
       toast.error("Name is required");
@@ -190,39 +291,32 @@ export default function ManageLegalProfilePage() {
 
     setProfileSaving(true);
     try {
-      const body = {
-        name: profileForm.name,
-        specialization: profileForm.specialization,
-        bio: profileForm.bio,
-        hourlyRate: Number(profileForm.hourlyRate) || 0,
-        phone: profileForm.phone,
-        barLicenseNumber: profileForm.barLicenseNumber,
-        experience: Number(profileForm.experience) || 0,
-        education: profileForm.education
-          ? profileForm.education
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean)
-          : [],
-        languages: profileForm.languages
-          ? profileForm.languages
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean)
-          : ["English"],
-        location: profileForm.location,
-        city: profileForm.city,
-        achievements: profileForm.achievements
-          ? profileForm.achievements
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean)
-          : [],
-      };
+      const currentDb = formToDb();
 
-      if (profileImage) {
+      // Compare with original DB data — only send CHANGED fields
+      const body = {};
+      const orig = originalProfile || {};
+
+      if (currentDb.name !== (orig.name || "")) body.name = currentDb.name;
+      if (currentDb.specialization !== (orig.specialization || "Criminal Law")) body.specialization = currentDb.specialization;
+      if (currentDb.bio !== (orig.bio || "")) body.bio = currentDb.bio;
+      if (currentDb.hourlyRate !== (orig.hourlyRate || 0)) body.hourlyRate = currentDb.hourlyRate;
+      if (currentDb.phone !== (orig.phone || "")) body.phone = currentDb.phone;
+      if (currentDb.barLicenseNumber !== (orig.barLicenseNumber || "")) body.barLicenseNumber = currentDb.barLicenseNumber;
+      if (currentDb.experience !== (orig.experience || 0)) body.experience = currentDb.experience;
+      if (JSON.stringify(currentDb.education) !== JSON.stringify(orig.education || [])) body.education = currentDb.education;
+      if (JSON.stringify(currentDb.languages) !== JSON.stringify(orig.languages || [])) body.languages = currentDb.languages;
+      if (currentDb.location !== (orig.location || "")) body.location = currentDb.location;
+      if (currentDb.city !== (orig.city || "")) body.city = currentDb.city;
+      if (JSON.stringify(currentDb.achievements) !== JSON.stringify(orig.achievements || [])) body.achievements = currentDb.achievements;
+
+      // Image: send if newly uploaded (even if original had one)
+      if (profileImage && profileImage !== (orig.image || "")) {
         body.image = profileImage;
       }
+
+      // name is always required by backend
+      if (!body.name) body.name = currentDb.name;
 
       const res = await apiFetch("/api/lawyers/profile", {
         method: "PUT",
@@ -230,6 +324,14 @@ export default function ManageLegalProfilePage() {
       });
       if (res.success) {
         toast.success("Profile updated successfully");
+        // Re-fetch profile to get latest DB data
+        const fresh = await apiFetch("/api/lawyers/profile");
+        if (fresh.success && fresh.data) {
+          const p = fresh.data;
+          setOriginalProfile(p);
+          setProfileForm(dbToForm(p));
+          setProfileImage(p.image || null);
+        }
         refetch();
       } else {
         toast.error(res.message || "Failed to update profile");
@@ -607,7 +709,7 @@ export default function ManageLegalProfilePage() {
           ) : (
             services.map((service) => (
               <div
-                key={service.id}
+                key={service._id}
                 className="px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-3 hover:bg-gray-50/50 transition-colors"
               >
                 <div className="flex-1 min-w-0">
@@ -634,7 +736,7 @@ export default function ManageLegalProfilePage() {
                     <Edit3 size={13} /> Edit
                   </button>
                   <button
-                    onClick={() => setDeleteId(service.id)}
+                    onClick={() => setDeleteId(service._id)}
                     className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     <Trash2 size={13} /> Delete
@@ -645,6 +747,105 @@ export default function ManageLegalProfilePage() {
           )}
         </div>
       </motion.div>
+
+      {/* Add/Edit Service Modal */}
+      <AnimatePresence>
+        {showServiceModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          >
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setShowServiceModal(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6"
+            >
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="text-lg font-bold text-[#1B2A4A]">
+                  {editingService ? "Edit Service" : "Add New Service"}
+                </h3>
+                <button
+                  onClick={() => setShowServiceModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className={labelClass}>Service Name *</label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="e.g. Corporate Consultation"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Description</label>
+                  <textarea
+                    rows={3}
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    placeholder="Briefly describe this service..."
+                    className={inputClass + " resize-none"}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelClass}>Fee per Hour ($) *</label>
+                    <input
+                      type="number"
+                      value={form.fee}
+                      onChange={(e) => setForm({ ...form, fee: e.target.value })}
+                      placeholder="150"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Specialization</label>
+                    <select
+                      value={form.specialization}
+                      onChange={(e) => setForm({ ...form, specialization: e.target.value })}
+                      className={inputClass + " bg-white"}
+                    >
+                      {SPECIALIZATIONS.map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    onClick={() => setShowServiceModal(false)}
+                    className="flex-1 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveService}
+                    disabled={serviceSaving}
+                    className="flex-1 py-2.5 text-sm font-semibold bg-[#1B2A4A] text-white hover:bg-[#243A5E] rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {serviceSaving ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : null}
+                    {editingService ? "Update" : "Add Service"}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Delete Confirmation Modal */}
       <AnimatePresence>

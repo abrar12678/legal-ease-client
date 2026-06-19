@@ -18,7 +18,7 @@ export default function TopLegalExperts() {
         const res = await fetch("/api/lawyers/top-experts");
         if (res.ok) {
           const json = await res.json();
-          setExperts(json.data?.lawyers || []);
+          setExperts((json.data?.lawyers || []).slice(0, 3));
         }
       } catch {
         // silently handle

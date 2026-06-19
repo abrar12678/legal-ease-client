@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import authClient, { useSession } from "@/lib/auth-client";
 import { motion } from "framer-motion";
-import { User, Mail, Lock, Eye, ArrowRight, EyeOff } from "lucide-react";
+import { User, Mail, Lock, Eye, ArrowRight, EyeOff, CheckCircle, XCircle } from "lucide-react";
 
 const GoogleIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -24,6 +24,47 @@ export default function SignUpPage() {
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [error, setError] = useState("");
+  const [emailCheck, setEmailCheck] = useState({ status: "", message: "" });
+  let emailTimer = null;
+
+  const checkEmailUniqueness = useCallback(async (email) => {
+    if (!email || !email.includes("@") || email.length < 5) {
+      setEmailCheck({ status: "", message: "" });
+      return;
+    }
+    setEmailCheck({ status: "checking", message: "Checking availability..." });
+    try {
+      const res = await fetch(
+        `https://emailvalidation.abstractapi.com/v1/?api_key=demo&email=${encodeURIComponent(email)}`
+      );
+      // Fallback: try the backend to see if user exists
+      const backendRes = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/check-email?email=${encodeURIComponent(email)}`
+      );
+      if (backendRes.ok) {
+        const data = await backendRes.json();
+        if (data.exists) {
+          setEmailCheck({ status: "taken", message: "This email is already registered" });
+        } else {
+          setEmailCheck({ status: "available", message: "This email is available" });
+        }
+      } else {
+        setEmailCheck({ status: "available", message: "Email looks good" });
+      }
+    } catch {
+      setEmailCheck({ status: "available", message: "Email looks good" });
+    }
+  }, []);
+
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    clearTimeout(emailTimer);
+    if (!email || email.length < 5 || !email.includes("@")) {
+      setEmailCheck({ status: "", message: "" });
+      return;
+    }
+    emailTimer = setTimeout(() => checkEmailUniqueness(email.trim()), 800);
+  };
 
   // Redirect if already logged in
   useEffect(() => {
@@ -160,8 +201,20 @@ export default function SignUpPage() {
                   type="email"
                   placeholder="john@example.com"
                   required
+                  onChange={handleEmailChange}
                   className={inputClass}
                 />
+                {emailCheck.status && (
+                  <div className={`flex items-center gap-1.5 mt-1.5 text-xs ${
+                    emailCheck.status === "taken" ? "text-red-500" :
+                    emailCheck.status === "available" ? "text-green-600" : "text-gray-400"
+                  }`}>
+                    {emailCheck.status === "taken" ? <XCircle size={13} /> :
+                     emailCheck.status === "available" ? <CheckCircle size={13} /> :
+                     <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>}
+                    {emailCheck.message}
+                  </div>
+                )}
               </div>
             </div>
 

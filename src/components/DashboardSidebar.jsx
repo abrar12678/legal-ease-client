@@ -67,8 +67,12 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
       {/* User Info */}
       <div className="px-5 py-4 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#D4A843]/20 flex items-center justify-center text-[#D4A843] font-bold text-sm">
-            {user?.name?.charAt(0)?.toUpperCase() || "U"}
+          <div className="w-10 h-10 rounded-full bg-[#D4A843]/20 flex items-center justify-center text-[#D4A843] font-bold text-sm overflow-hidden">
+            {user?.image ? (
+              <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+            ) : (
+              <span>{user?.name?.charAt(0)?.toUpperCase() || "U"}</span>
+            )}
           </div>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-white truncate">

@@ -117,8 +117,12 @@ export default function UserDashboardPage() {
         className="bg-white rounded-2xl border border-gray-100 p-6"
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-          <div className="w-20 h-20 rounded-2xl bg-[#1B2A4A]/5 flex items-center justify-center text-[#1B2A4A] text-2xl font-bold shrink-0">
-            {user?.name?.charAt(0)?.toUpperCase() || "U"}
+          <div className="w-20 h-20 rounded-2xl bg-[#1B2A4A]/5 flex items-center justify-center text-[#1B2A4A] text-2xl font-bold shrink-0 overflow-hidden">
+            {user?.image ? (
+              <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+            ) : (
+              <span>{user?.name?.charAt(0)?.toUpperCase() || "U"}</span>
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <h2 className="text-xl font-bold text-[#1B2A4A]">{user?.name || "User Name"}</h2>

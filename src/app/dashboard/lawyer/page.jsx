@@ -59,14 +59,19 @@ export default function LawyerDashboardPage() {
         }
       } catch (err) {
         // silently handle — no data yet is normal
-      
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
-    fetchData();
+
+    // Wait for session to be ready before fetching — ensures apiFetch gets a valid token
+    if (!isPending) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
     return () => { cancelled = true; };
-  }, []);
+  }, [isPending]);
 
   if (loading || isPending) {
     return (
@@ -129,12 +134,16 @@ export default function LawyerDashboardPage() {
         className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8"
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <div className="w-28 h-28 rounded-2xl bg-[#1B2A4A]/5 flex items-center justify-center text-[#1B2A4A] text-3xl font-bold shrink-0 border-4 border-white shadow-md">
-            {user?.name?.charAt(0)?.toUpperCase() || "L"}
+          <div className="w-28 h-28 rounded-2xl bg-[#1B2A4A]/5 flex items-center justify-center text-[#1B2A4A] text-3xl font-bold shrink-0 border-4 border-white shadow-md overflow-hidden">
+            {(profile?.image || user?.image) ? (
+              <img src={profile?.image || user?.image} alt={profile?.name || user?.name} className="w-full h-full object-cover" />
+            ) : (
+              <span>{(profile?.name || user?.name)?.charAt(0)?.toUpperCase() || "L"}</span>
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-3 mb-2">
-              <h2 className="text-xl font-bold text-[#1B2A4A]">{user?.name || "Lawyer Name"}</h2>
+              <h2 className="text-xl font-bold text-[#1B2A4A]">{profile?.name || user?.name || "Lawyer Name"}</h2>
               <span className={`px-3 py-1 rounded-full text-xs font-semibold ${isAvailable ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
                 {isAvailable ? "Available" : "Unavailable"}
               </span>
