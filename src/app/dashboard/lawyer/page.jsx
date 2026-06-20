@@ -58,13 +58,13 @@ export default function LawyerDashboardPage() {
           }
         }
       } catch (err) {
-        // silently handle — no data yet is normal
+        
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
-    // Wait for session to be ready before fetching — ensures apiFetch gets a valid token
+    
     if (!isPending) {
       fetchData();
     } else {
@@ -120,7 +120,7 @@ export default function LawyerDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">
           Welcome, {user?.name?.split(" ")[0] || "Lawyer"}
@@ -128,7 +128,7 @@ export default function LawyerDashboardPage() {
         <p className="text-gray-500 mt-1">Manage your legal services and client requests</p>
       </div>
 
-      {/* Profile Card */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -168,7 +168,7 @@ export default function LawyerDashboardPage() {
         </div>
       </motion.div>
 
-      {/* Stat Cards */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, i) => {
           const Icon = card.icon;
@@ -190,7 +190,7 @@ export default function LawyerDashboardPage() {
         })}
       </div>
 
-      {/* Recent Requests */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

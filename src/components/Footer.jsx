@@ -54,7 +54,7 @@ export default function Footer() {
     <footer className="bg-[#1B2A4A] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand Column */}
+          {}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
@@ -72,7 +72,7 @@ export default function Footer() {
               Connecting clients with expert legal professionals. Find, hire, and
               manage legal services — all in one secure platform.
             </p>
-            {/* Social Icons */}
+            {}
             <div className="flex items-center gap-3">
               {SOCIAL_LINKS.map((social) => (
                 <a
@@ -87,7 +87,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
               Quick Links
@@ -106,7 +106,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal Services */}
+          {}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
               Legal Services
@@ -127,7 +127,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
+          {}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80 mb-4">
               Newsletter
@@ -161,7 +161,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {}
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-white/40">
             &copy; {new Date().getFullYear()} LegalEase. All rights reserved.

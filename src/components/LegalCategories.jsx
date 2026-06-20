@@ -50,13 +50,13 @@ const itemVariants = {
 function getCountForCategory(categoryLabel, categoryCounts) {
   if (!categoryCounts.length) return 0;
 
-  // Exact match (case-insensitive)
+  
   const exact = categoryCounts.find(
     (c) => c.name.toLowerCase() === categoryLabel.toLowerCase()
   );
   if (exact) return exact.count;
 
-  // Loose match: API name contains category label or vice versa
+  
   const loose = categoryCounts.find(
     (c) =>
       c.name.toLowerCase().includes(categoryLabel.toLowerCase()) ||
@@ -79,7 +79,7 @@ export default function LegalCategories() {
           setCategoryCounts(json.data?.categories || []);
         }
       } catch {
-        // silently handle
+        
       }
     }
     fetchCategories();
@@ -97,7 +97,7 @@ export default function LegalCategories() {
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export default function LegalCategories() {
           </p>
         </motion.div>
 
-        {/* Categories Grid */}
+        {}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -154,7 +154,7 @@ export default function LegalCategories() {
           })}
         </motion.div>
 
-        {/* Browse All Link */}
+        {}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

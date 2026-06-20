@@ -7,7 +7,7 @@ import { Users, Shield, Award, Scale, ArrowRight, Heart, Target } from "lucide-r
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      {}
       <section className="relative bg-gradient-to-br from-[#1B2A4A] to-[#2D4A7A] py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-40 h-40 border border-white/30 rounded-full" />
@@ -31,7 +31,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission Section */}
+      {}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -117,7 +117,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values Section */}
+      {}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -156,7 +156,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {}
       <section className="py-16 bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-[#1B2A4A] mb-4">Ready to Get Started?</h2>

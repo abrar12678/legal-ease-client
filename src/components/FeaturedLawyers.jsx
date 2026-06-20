@@ -39,7 +39,7 @@ export default function FeaturedLawyers() {
           }
         }
       } catch (err) {
-        // silently handle
+        
       } finally {
         setLoading(false);
       }
@@ -50,7 +50,7 @@ export default function FeaturedLawyers() {
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,7 +93,7 @@ export default function FeaturedLawyers() {
           </div>
         ) : (
           <>
-            {/* Lawyer Cards Grid */}
+            {}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -110,7 +110,7 @@ export default function FeaturedLawyers() {
                   className="bg-white rounded-2xl overflow-hidden border border-gray-100 group cursor-pointer"
                 >
                   <Link href={`/lawyers/${lawyer._id}`} className="block">
-                    {/* Card Top - Avatar + Status */}
+                    {}
                     <div className="relative pt-8 pb-4 flex flex-col items-center bg-gradient-to-b from-[#1B2A4A]/5 to-transparent">
                       <div className="relative">
                         {lawyer.image ? (
@@ -126,7 +126,7 @@ export default function FeaturedLawyers() {
                             {lawyer.name?.charAt(0)?.toUpperCase() || "L"}
                           </div>
                         )}
-                        {/* Status Badge */}
+                        {}
                         <span
                           className={`absolute -bottom-1 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-semibold ${
                             lawyer.isAvailable
@@ -139,7 +139,7 @@ export default function FeaturedLawyers() {
                       </div>
                     </div>
 
-                    {/* Card Body */}
+                    {}
                     <div className="px-5 pb-5 pt-3 text-center">
                       <h3 className="text-lg font-bold text-[#1B2A4A] group-hover:text-[#D4A843] transition-colors">
                         {lawyer.name}
@@ -148,7 +148,7 @@ export default function FeaturedLawyers() {
                         {lawyer.specialization || "N/A"}
                       </p>
 
-                      {/* Rating */}
+                      {}
                       <div className="flex items-center justify-center gap-1 mt-2">
                         <Star size={14} className="fill-amber-400 text-amber-400" />
                         <span className="text-sm font-semibold text-gray-700">
@@ -159,7 +159,7 @@ export default function FeaturedLawyers() {
                         </span>
                       </div>
 
-                      {/* Info Row */}
+                      {}
                       <div className="flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
                         <span className="flex items-center gap-1">
                           <MapPin size={12} />
@@ -178,7 +178,7 @@ export default function FeaturedLawyers() {
           </>
         )}
 
-        {/* View All Button */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

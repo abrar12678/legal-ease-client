@@ -21,7 +21,7 @@ export default function TopLegalExperts() {
           setExperts((json.data?.lawyers || []).slice(0, 3));
         }
       } catch {
-        // silently handle
+        
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ export default function TopLegalExperts() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export default function TopLegalExperts() {
           </p>
         </motion.div>
 
-        {/* Loading Skeleton */}
+        {}
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
@@ -71,7 +71,7 @@ export default function TopLegalExperts() {
           </div>
         )}
 
-        {/* Empty State */}
+        {}
         {!loading && experts.length === 0 && (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -84,7 +84,7 @@ export default function TopLegalExperts() {
           </div>
         )}
 
-        {/* Experts Cards */}
+        {}
         {!loading && experts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {experts.map((expert, index) => (
@@ -97,16 +97,16 @@ export default function TopLegalExperts() {
                 whileHover={{ y: -4 }}
                 className="relative bg-gradient-to-br from-[#1B2A4A] to-[#2D4A7A] rounded-2xl p-6 text-white overflow-hidden group"
               >
-                {/* Decorative circle */}
+                {}
                 <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
 
-                {/* Rank Badge */}
+                {}
                 <div className="absolute top-4 right-4 w-8 h-8 bg-[#D4A843] rounded-full flex items-center justify-center text-[#1B2A4A] text-sm font-bold">
                   #{index + 1}
                 </div>
 
                 <div className="relative z-10 flex flex-col items-center text-center pt-4">
-                  {/* Avatar */}
+                  {}
                   <div className="w-20 h-20 rounded-full overflow-hidden ring-4 ring-[#D4A843]/30 mb-4 bg-white/10">
                     {expert.image ? (
                       <Image
@@ -131,13 +131,13 @@ export default function TopLegalExperts() {
                     </p>
                   )}
 
-                  {/* Total Hires */}
+                  {}
                   <div className="mt-4 bg-white/10 rounded-lg px-4 py-2">
                     <p className="text-2xl font-bold">{expert.totalHires}</p>
                     <p className="text-xs text-white/60">Total Hires</p>
                   </div>
 
-                  {/* View Profile Link */}
+                  {}
                   <Link
                     href={`/lawyers/${expert._id}`}
                     className="mt-4 inline-flex items-center gap-1 text-sm text-[#D4A843] hover:text-white transition-colors font-medium"

@@ -26,7 +26,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode overrides for key elements */
+
 .dark body,
 .dark .bg-white { background-color: #1e293b; }
 .dark .bg-gray-50 { background-color: #0f172a; }
@@ -61,12 +61,12 @@ body {
   background-color: #334155 !important;
 }
 
-/* Smooth scrolling */
+
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+
 ::-webkit-scrollbar {
   width: 8px;
 }

@@ -74,7 +74,7 @@ export default function Hero() {
     [current]
   );
 
-  // Auto-slide every 6 seconds
+  
   useEffect(() => {
     const timer = setInterval(() => {
       setDirection(1);
@@ -97,7 +97,7 @@ export default function Hero() {
 
   return (
     <section className="relative w-full min-h-[600px] h-[85vh] max-h-[800px] overflow-hidden">
-      {/* Background Slides */}
+      {}
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={slide.id}
@@ -111,7 +111,7 @@ export default function Hero() {
         />
       </AnimatePresence>
 
-      {/* Floating Legal Icons (decorative) */}
+      {}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {FLOATING_ICONS.map(({ Icon, top, left, right, bottom, size, delay }, i) => (
           <motion.div
@@ -131,10 +131,10 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Content */}
+      {}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
         <div className="max-w-2xl">
-          {/* Icon Badge */}
+          {}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -147,7 +147,7 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Title */}
+          {}
           <AnimatePresence mode="wait">
             <motion.h1
               key={slide.id + "-title"}
@@ -161,7 +161,7 @@ export default function Hero() {
             </motion.h1>
           </AnimatePresence>
 
-          {/* Subtitle */}
+          {}
           <AnimatePresence mode="wait">
             <motion.p
               key={slide.id + "-sub"}
@@ -175,7 +175,7 @@ export default function Hero() {
             </motion.p>
           </AnimatePresence>
 
-          {/* CTA Button */}
+          {}
           <AnimatePresence mode="wait">
             <motion.div
               key={slide.id + "-cta"}
@@ -196,7 +196,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Slide Indicators + Navigation */}
+      {}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
         <button
           onClick={() => goTo((current - 1 + SLIDES.length) % SLIDES.length)}

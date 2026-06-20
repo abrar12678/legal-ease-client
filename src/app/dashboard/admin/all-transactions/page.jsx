@@ -27,7 +27,7 @@ export default function AllTransactionsPage() {
         setTotalAmount(res.data.totalAmount || 0);
       }
     } catch (err) {
-      // silently handle
+      
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export default function AllTransactionsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">All Transactions</h1>
@@ -79,7 +79,7 @@ export default function AllTransactionsPage() {
         </div>
       </div>
 
-      {/* Filters */}
+      {}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl border border-gray-100 p-4">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
@@ -110,7 +110,7 @@ export default function AllTransactionsPage() {
         </div>
       </motion.div>
 
-      {/* Table */}
+      {}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">

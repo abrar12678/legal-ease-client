@@ -53,7 +53,7 @@ export default function LawyerCard({ lawyer, index = 0 }) {
       whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(27,42,74,0.1)" }}
       className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-700 group cursor-pointer relative"
     >
-      {/* Hired Badge */}
+      {}
       {lawyer.isHired && (
         <div className="absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 bg-green-500 text-white text-[11px] font-bold rounded-full shadow-sm">
           <BadgeCheck size={12} />
@@ -61,7 +61,7 @@ export default function LawyerCard({ lawyer, index = 0 }) {
         </div>
       )}
 
-      {/* Shortlist Heart Button */}
+      {}
       {isUser && (
         <button
           onClick={handleToggleShortlist}
@@ -81,7 +81,7 @@ export default function LawyerCard({ lawyer, index = 0 }) {
       )}
 
       <Link href={`/lawyers/${lawyer.id}`} className="block">
-        {/* Top: Avatar + Status */}
+        {}
         <div className="relative pt-7 pb-3 flex flex-col items-center bg-gradient-to-b from-[#1B2A4A]/[0.04] dark:from-white/[0.03] to-transparent">
           <div className="relative">
             <div className="w-22 h-22 rounded-full overflow-hidden ring-4 ring-white dark:ring-slate-800 shadow-md">
@@ -105,7 +105,7 @@ export default function LawyerCard({ lawyer, index = 0 }) {
           </div>
         </div>
 
-        {/* Body */}
+        {}
         <div className="px-4 pb-4 pt-2 text-center">
           <h3 className="text-[15px] font-bold text-[#1B2A4A] dark:text-white group-hover:text-[#D4A843] transition-colors truncate">
             {lawyer.name}

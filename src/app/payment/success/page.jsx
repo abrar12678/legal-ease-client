@@ -35,7 +35,7 @@ export default function PaymentSuccessPage() {
           setVerified(true);
         }
       } catch {
-        // Stripe redirected here = payment succeeded, webhook not needed
+        
         setVerified(true);
       } finally {
         setVerifying(false);

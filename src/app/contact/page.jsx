@@ -7,7 +7,7 @@ import { Mail, Phone, MapPin, Clock, Send, MessageSquare } from "lucide-react";
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
+      {}
       <section className="relative bg-gradient-to-br from-[#1B2A4A] to-[#2D4A7A] py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-40 h-40 border border-white/30 rounded-full" />
@@ -26,11 +26,11 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Contact Info + Form */}
+      {}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-            {/* Contact Info Cards */}
+            {}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -68,7 +68,7 @@ export default function ContactPage() {
               ))}
             </motion.div>
 
-            {/* Contact Form */}
+            {}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}

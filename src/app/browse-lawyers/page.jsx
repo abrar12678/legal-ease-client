@@ -151,7 +151,7 @@ function BrowseContent() {
         setTotalResults(json.data?.total || 0);
       }
     } catch {
-      // silently handle
+      
     } finally {
       setLoading(false);
     }
@@ -177,13 +177,13 @@ function BrowseContent() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Page Header */}
+        {}
         <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-[#1B2A4A]">Browse Lawyers</h1>
           <p className="text-gray-500 mt-2">Find and hire the right legal expert for your needs</p>
         </div>
 
-        {/* Top Bar: Search + Sort + Filter Toggle + Count */}
+        {}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-2">
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -207,7 +207,7 @@ function BrowseContent() {
             />
           </div>
 
-          {/* Desktop Sort */}
+          {}
           <div className="hidden sm:block relative w-52">
             <select
               value={currentSort}
@@ -225,7 +225,7 @@ function BrowseContent() {
             <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
 
-          {/* Mobile Filter Toggle */}
+          {}
           <button
             onClick={() => setMobileFiltersOpen(true)}
             className="lg:hidden flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-[#1B2A4A] border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
@@ -234,21 +234,21 @@ function BrowseContent() {
           </button>
         </div>
 
-        {/* Results Count */}
+        {}
         <p className="text-sm text-gray-500 mb-6">
           Showing <span className="font-semibold text-[#1B2A4A]">{totalResults}</span> lawyers
         </p>
 
-        {/* Layout: Sidebar + Grid */}
+        {}
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Desktop Sidebar */}
+          {}
           <aside className="hidden lg:block w-64 shrink-0">
             <div className="bg-white rounded-2xl border border-gray-100 p-5 sticky top-24">
               <SidebarFilters searchParams={searchParams} router={router} />
             </div>
           </aside>
 
-          {/* Lawyer Grid */}
+          {}
           <div className="flex-1">
             {loading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -262,7 +262,7 @@ function BrowseContent() {
                   {lawyers.map((lawyer, i) => (<LawyerCard key={lawyer.id} lawyer={lawyer} index={i} />))}
                 </div>
 
-                {/* Pagination */}
+                {}
                 {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2 mt-10">
                     <button
@@ -296,7 +296,7 @@ function BrowseContent() {
         </div>
       </div>
 
-      {/* Mobile Filter Drawer */}
+      {}
       {mobileFiltersOpen && (
         <div className="lg:hidden">
           <div className="fixed inset-0 bg-black/40 z-40" onClick={() => setMobileFiltersOpen(false)} />

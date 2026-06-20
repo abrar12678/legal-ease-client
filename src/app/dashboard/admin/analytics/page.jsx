@@ -103,7 +103,7 @@ export default function AnalyticsPage() {
           setAnalytics(analyticsRes.data);
         }
       } catch (err) {
-        // silently handle
+        
       } finally {
         setLoading(false);
       }
@@ -173,7 +173,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">
           Analytics
@@ -183,7 +183,7 @@ export default function AnalyticsPage() {
         </p>
       </div>
 
-      {/* Main Stat Cards */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {mainCards.map((card, i) => {
           const Icon = card.icon;
@@ -213,9 +213,9 @@ export default function AnalyticsPage() {
         })}
       </div>
 
-      {/* Charts Row */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* New Users Chart */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -234,7 +234,7 @@ export default function AnalyticsPage() {
           />
         </motion.div>
 
-        {/* Revenue Chart */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -254,9 +254,9 @@ export default function AnalyticsPage() {
         </motion.div>
       </div>
 
-      {/* Bottom Row */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Hires Chart */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -275,7 +275,7 @@ export default function AnalyticsPage() {
           />
         </motion.div>
 
-        {/* Top Specializations */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

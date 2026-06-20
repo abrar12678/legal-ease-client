@@ -33,7 +33,7 @@ export default function LawyerHiringHistoryPage() {
         setRequests(mapped);
       }
     } catch (err) {
-      // silently handle
+      
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,7 @@ export default function LawyerHiringHistoryPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">Hiring Requests</h1>
@@ -97,7 +97,7 @@ export default function LawyerHiringHistoryPage() {
         )}
       </div>
 
-      {/* Search */}
+      {}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="relative">
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -111,7 +111,7 @@ export default function LawyerHiringHistoryPage() {
         </div>
       </motion.div>
 
-      {/* Table */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

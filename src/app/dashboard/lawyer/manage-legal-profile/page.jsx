@@ -45,7 +45,7 @@ const inputClass =
   "w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1B2A4A]/20 focus:border-[#1B2A4A]/30";
 const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
 
-// Helper: convert DB data → profileForm format (comma-strings)
+
 const dbToForm = (p, fallbackName = "") => ({
   name: p.name || fallbackName || "",
   specialization: p.specialization || "Criminal Law",
@@ -80,7 +80,7 @@ export default function ManageLegalProfilePage() {
   const [imageUploading, setImageUploading] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);
   const fileInputRef = useRef(null);
-  // Store original DB data to compare what changed on save
+  
   const [originalProfile, setOriginalProfile] = useState(null);
 
   const [profileForm, setProfileForm] = useState({
@@ -105,7 +105,7 @@ export default function ManageLegalProfilePage() {
         const res = await apiFetch("/api/lawyers/profile");
         if (!cancelled && res.success && res.data) {
           const p = res.data;
-          // Store original DB data for change comparison on save
+          
           setOriginalProfile(p);
           setProfileForm(dbToForm(p, user?.name));
           setProfileImage(p.image || null);
@@ -134,7 +134,7 @@ export default function ManageLegalProfilePage() {
           setServices(res.data || []);
         }
       } catch {
-        // silently handle
+        
       }
     };
 
@@ -195,7 +195,7 @@ export default function ManageLegalProfilePage() {
       if (res.success) {
         toast.success(editingService ? "Service updated" : "Service added");
         setShowServiceModal(false);
-        // Refresh services
+        
         const servicesRes = await apiFetch("/api/lawyers/services");
         if (servicesRes.success) {
           setServices(servicesRes.data || []);
@@ -261,7 +261,7 @@ export default function ManageLegalProfilePage() {
     }
   };
 
-  // Helper: convert profileForm (comma-strings) → DB format (arrays/numbers)
+  
   const formToDb = () => ({
     name: profileForm.name.trim(),
     specialization: profileForm.specialization,
@@ -293,7 +293,7 @@ export default function ManageLegalProfilePage() {
     try {
       const currentDb = formToDb();
 
-      // Compare with original DB data — only send CHANGED fields
+      
       const body = {};
       const orig = originalProfile || {};
 
@@ -310,12 +310,12 @@ export default function ManageLegalProfilePage() {
       if (currentDb.city !== (orig.city || "")) body.city = currentDb.city;
       if (JSON.stringify(currentDb.achievements) !== JSON.stringify(orig.achievements || [])) body.achievements = currentDb.achievements;
 
-      // Image: send if newly uploaded (even if original had one)
+      
       if (profileImage && profileImage !== (orig.image || "")) {
         body.image = profileImage;
       }
 
-      // name is always required by backend
+      
       if (!body.name) body.name = currentDb.name;
 
       const res = await apiFetch("/api/lawyers/profile", {
@@ -324,7 +324,7 @@ export default function ManageLegalProfilePage() {
       });
       if (res.success) {
         toast.success("Profile updated successfully");
-        // Re-fetch profile to get latest DB data
+        
         const fresh = await apiFetch("/api/lawyers/profile");
         if (fresh.success && fresh.data) {
           const p = fresh.data;
@@ -359,7 +359,7 @@ export default function ManageLegalProfilePage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">
           Manage Legal Profile
@@ -369,7 +369,7 @@ export default function ManageLegalProfilePage() {
         </p>
       </div>
 
-      {/* Profile Section */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -380,7 +380,7 @@ export default function ManageLegalProfilePage() {
           Profile Information
         </h3>
         <div className="flex flex-col sm:flex-row items-start gap-8">
-          {/* Avatar */}
+          {}
           <div className="shrink-0">
             <div className="relative group w-32 h-32">
               <div className="w-32 h-32 rounded-2xl bg-[#1B2A4A]/5 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
@@ -416,9 +416,9 @@ export default function ManageLegalProfilePage() {
             </p>
           </div>
 
-          {/* Profile Form */}
+          {}
           <div className="flex-1 w-full space-y-4">
-            {/* Row 1: Name + Specialization */}
+            {}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Full Name *</label>
@@ -453,7 +453,7 @@ export default function ManageLegalProfilePage() {
               </div>
             </div>
 
-            {/* Row 2: Phone + Bar License */}
+            {}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>
@@ -492,7 +492,7 @@ export default function ManageLegalProfilePage() {
               </div>
             </div>
 
-            {/* Row 3: Hourly Rate + Experience */}
+            {}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>
@@ -534,7 +534,7 @@ export default function ManageLegalProfilePage() {
               </div>
             </div>
 
-            {/* Row 4: Location + City */}
+            {}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>
@@ -573,7 +573,7 @@ export default function ManageLegalProfilePage() {
               </div>
             </div>
 
-            {/* Row 5: Education + Languages */}
+            {}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>
@@ -621,7 +621,7 @@ export default function ManageLegalProfilePage() {
               </div>
             </div>
 
-            {/* Bio */}
+            {}
             <div>
               <label className={labelClass}>Professional Bio</label>
               <textarea
@@ -635,7 +635,7 @@ export default function ManageLegalProfilePage() {
               />
             </div>
 
-            {/* Achievements */}
+            {}
             <div>
               <label className={labelClass}>
                 <span className="inline-flex items-center gap-1.5">
@@ -659,7 +659,7 @@ export default function ManageLegalProfilePage() {
               </p>
             </div>
 
-            {/* Save Button */}
+            {}
             <div className="pt-2">
               <button
                 onClick={handleSaveProfile}
@@ -674,7 +674,7 @@ export default function ManageLegalProfilePage() {
         </div>
       </motion.div>
 
-      {/* Services Section */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -748,7 +748,7 @@ export default function ManageLegalProfilePage() {
         </div>
       </motion.div>
 
-      {/* Add/Edit Service Modal */}
+      {}
       <AnimatePresence>
         {showServiceModal && (
           <motion.div
@@ -847,7 +847,7 @@ export default function ManageLegalProfilePage() {
         )}
       </AnimatePresence>
 
-      {/* Delete Confirmation Modal */}
+      {}
       <AnimatePresence>
         {deleteId !== null && (
           <motion.div

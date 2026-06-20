@@ -71,7 +71,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
 
   const filtersContent = (
     <div className="space-y-5">
-      {/* Fee Range */}
+      {}
       <div>
         <label className="block text-sm font-semibold text-[#1B2A4A] mb-2">
           Hourly Fee Range ($)
@@ -95,7 +95,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
         </div>
       </div>
 
-      {/* Specialization */}
+      {}
       <div>
         <label className="block text-sm font-semibold text-[#1B2A4A] mb-2">
           Specialization
@@ -119,7 +119,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
         </div>
       </div>
 
-      {/* Availability */}
+      {}
       <div>
         <label className="block text-sm font-semibold text-[#1B2A4A] mb-2">
           Availability
@@ -145,7 +145,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
         </div>
       </div>
 
-      {/* Sort */}
+      {}
       <div>
         <label className="block text-sm font-semibold text-[#1B2A4A] mb-2">
           Sort By
@@ -169,7 +169,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
         </div>
       </div>
 
-      {/* Clear Filters */}
+      {}
       {hasActiveFilters && (
         <button
           onClick={clearAll}
@@ -184,9 +184,9 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
 
   return (
     <div className="space-y-4">
-      {/* Top Bar: Search + Filter Toggle + Sort + Count */}
+      {}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        {/* Search */}
+        {}
         <div className="relative flex-1">
           <Search
             size={16}
@@ -205,7 +205,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
           />
         </div>
 
-        {/* Desktop Sort */}
+        {}
         <div className="hidden sm:block relative w-52">
           <select
             value={currentSort}
@@ -224,7 +224,7 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
           />
         </div>
 
-        {/* Filter Toggle (mobile) */}
+        {}
         <button
           onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
           className="lg:hidden flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-[#1B2A4A] border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
@@ -239,18 +239,18 @@ export default function SearchFilters({ onFilterChange, totalResults }) {
         </button>
       </div>
 
-      {/* Results Count */}
+      {}
       <p className="text-sm text-gray-500">
         Showing <span className="font-semibold text-[#1B2A4A]">{totalResults}</span>{" "}
         lawyers
       </p>
 
-      {/* Desktop Sidebar Filters */}
+      {}
       <div className="hidden lg:block w-64 shrink-0">
         {filtersContent}
       </div>
 
-      {/* Mobile Filter Sheet */}
+      {}
       {mobileFiltersOpen && (
         <>
           <div

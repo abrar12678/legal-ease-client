@@ -23,7 +23,7 @@ const ROLE_COLORS = {
 
 const ROLES = ["user", "lawyer", "admin"];
 
-// Display role labels (DB values → display names)
+
 const ROLE_LABELS = { user: "User", lawyer: "Lawyer", admin: "Admin" };
 
 function displayRole(role) {
@@ -48,7 +48,7 @@ export default function ManageUsersPage() {
           setRoleCounts(res.data.roleCounts || {});
         }
       } catch (err) {
-        // silently handle
+        
       } finally {
         setLoading(false);
       }
@@ -137,13 +137,13 @@ export default function ManageUsersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">Manage Users</h1>
         <p className="text-gray-500 mt-1">View all users, change roles, and manage accounts</p>
       </div>
 
-      {/* Filters */}
+      {}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl border border-gray-100 p-4">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
@@ -174,7 +174,7 @@ export default function ManageUsersPage() {
         </div>
       </motion.div>
 
-      {/* Table */}
+      {}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -267,7 +267,7 @@ export default function ManageUsersPage() {
         </div>
       </motion.div>
 
-      {/* Change Role Modal */}
+      {}
       <AnimatePresence>
         {changeRoleId !== null && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -311,7 +311,7 @@ export default function ManageUsersPage() {
         )}
       </AnimatePresence>
 
-      {/* Delete Confirmation Modal */}
+      {}
       <AnimatePresence>
         {deleteId !== null && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">

@@ -37,7 +37,7 @@ export default function UserCommentsPage() {
           setComments(mapped);
         }
       } catch (err) {
-        // silently handle — no data yet is normal
+        
       
       } finally {
         if (!cancelled) setLoading(false);
@@ -108,7 +108,7 @@ export default function UserCommentsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">My Comments</h1>
         <p className="text-gray-500 mt-1">View and manage your reviews on lawyer profiles</p>
@@ -187,7 +187,7 @@ export default function UserCommentsPage() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {}
       <AnimatePresence>
         {deleteId !== null && (
           <motion.div

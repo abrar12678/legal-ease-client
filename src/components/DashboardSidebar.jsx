@@ -50,7 +50,7 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      {/* Logo */}
+      {}
       <div className="px-5 py-5 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
@@ -66,7 +66,7 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
         </Link>
       </div>
 
-      {/* User Info */}
+      {}
       <div className="px-5 py-4 border-b border-white/10">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-[#D4A843]/20 flex items-center justify-center text-[#D4A843] font-bold text-sm overflow-hidden">
@@ -85,7 +85,7 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
         </div>
       </div>
 
-      {/* Navigation Links */}
+      {}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         <p className="px-3 mb-2 text-[11px] font-semibold text-white/30 uppercase tracking-wider">
           Navigation
@@ -111,7 +111,7 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
         })}
       </nav>
 
-      {/* Logout */}
+      {}
       <div className="px-3 py-4 border-t border-white/10">
         <button
           onClick={handleSignOut}
@@ -126,12 +126,12 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
 
   return (
     <>
-      {/* Desktop Sidebar */}
+      {}
       <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:top-16 lg:w-64 bg-[#1B2A4A] z-30">
         {sidebarContent}
       </aside>
 
-      {/* Mobile Sidebar Drawer */}
+      {}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -149,7 +149,7 @@ export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="lg:hidden fixed inset-y-0 left-0 top-16 w-72 bg-[#1B2A4A] z-50 rounded-tr-xl"
             >
-              {/* Mobile Close Button */}
+              {}
               <button
                 onClick={onClose}
                 className="absolute top-4 right-3 w-8 h-8 flex items-center justify-center rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-colors z-10"

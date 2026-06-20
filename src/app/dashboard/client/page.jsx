@@ -42,7 +42,7 @@ export default function UserDashboardPage() {
         }
       } catch (err) {
         if (!cancelled) {
-          // silently fail — new users have no data yet
+          
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -56,7 +56,7 @@ export default function UserDashboardPage() {
     return () => { cancelled = true; };
   }, [isPending]);
 
-  // Compute stats from hirings
+  
   const totalHires = allHirings.length;
   const pendingCount = allHirings.filter((h) => h.status === "pending").length;
   const completedCount = allHirings.filter((h) => h.status === "completed" || h.status === "paid").length;
@@ -97,7 +97,7 @@ export default function UserDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Title */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">
@@ -114,7 +114,7 @@ export default function UserDashboardPage() {
         </Link>
       </div>
 
-      {/* Profile Card */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -148,7 +148,7 @@ export default function UserDashboardPage() {
         </div>
       </motion.div>
 
-      {/* Stat Cards */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, i) => {
           const Icon = card.icon;
@@ -170,7 +170,7 @@ export default function UserDashboardPage() {
         })}
       </div>
 
-      {/* Recent Hiring Activity */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

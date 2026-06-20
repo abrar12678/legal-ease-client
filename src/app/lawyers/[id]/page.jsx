@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import HireModal from "./components/HireModal";
 
-/* ─── Star Rating Selector ─── */
+
 function StarRating({ value, onChange, size = 20, readonly = false }) {
   const [hover, setHover] = useState(0);
 
@@ -56,7 +56,7 @@ function StarRating({ value, onChange, size = 20, readonly = false }) {
   );
 }
 
-/* ─── Skeleton Loader ─── */
+
 function DetailSkeleton() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16">
@@ -92,7 +92,7 @@ function DetailSkeleton() {
   );
 }
 
-/* ─── Main Page ─── */
+
 export default function LawyerDetailsPage() {
   const params = useParams();
   const router = useRouter();
@@ -106,7 +106,7 @@ export default function LawyerDetailsPage() {
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [shortlistLoading, setShortlistLoading] = useState(false);
 
-  // Comment form state
+  
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const [submittingReview, setSubmittingReview] = useState(false);
@@ -125,7 +125,7 @@ export default function LawyerDetailsPage() {
           }
         }
       } catch {
-        // silently handle
+        
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -137,7 +137,7 @@ export default function LawyerDetailsPage() {
     };
   }, [params.id]);
 
-  // Fetch hired/shortlist status for logged-in users
+  
   useEffect(() => {
     if (!isPending && user?.role === "user" && params.id) {
       apiFetch(`/api/lawyers/${params.id}/hired-status`).then((res) => {
@@ -181,7 +181,7 @@ export default function LawyerDetailsPage() {
 
       if (res.success) {
         toast.success("Review submitted successfully!");
-        // Add the new comment to the list optimistically
+        
         const newComment = {
           _id: res.data._id,
           userId: user.id,
@@ -195,7 +195,7 @@ export default function LawyerDetailsPage() {
         setReviewText("");
         setReviewRating(0);
 
-        // Update review stats on the lawyer
+        
         setLawyer((prev) => {
           const oldTotal = prev.reviews || 0;
           const oldAvg = prev.rating || 0;
@@ -253,7 +253,7 @@ export default function LawyerDetailsPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Link */}
+        {}
         <Link
           href="/browse-lawyers"
           className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#1B2A4A] transition-colors mb-6"
@@ -262,7 +262,7 @@ export default function LawyerDetailsPage() {
           Back to Browse Lawyers
         </Link>
 
-        {/* Main Profile Card */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -271,7 +271,7 @@ export default function LawyerDetailsPage() {
         >
           <div className="p-6 sm:p-8 lg:p-10">
             <div className="flex flex-col md:flex-row gap-8">
-              {/* Avatar */}
+              {}
               <div className="shrink-0 mx-auto md:mx-0">
                 {lawyer.image ? (
                   <div className="w-40 h-40 rounded-2xl overflow-hidden ring-4 ring-[#1B2A4A]/10 shadow-lg">
@@ -288,7 +288,7 @@ export default function LawyerDetailsPage() {
                 )}
               </div>
 
-              {/* Info */}
+              {}
               <div className="flex-1 text-center md:text-left">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-2">
                   <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">
@@ -314,7 +314,7 @@ export default function LawyerDetailsPage() {
                   {lawyer.specialization || "N/A"}
                 </p>
 
-                {/* Stats Row */}
+                {}
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-2 mb-5 text-sm text-gray-600">
                   <span className="flex items-center gap-1">
                     <Star
@@ -342,7 +342,7 @@ export default function LawyerDetailsPage() {
                   </span>
                 </div>
 
-                {/* Bio */}
+                {}
                 {lawyer.bio && (
                   <div className="bg-gray-50 rounded-xl p-5 mb-6 text-left">
                     <h3 className="text-sm font-semibold text-[#1B2A4A] mb-2">
@@ -354,7 +354,7 @@ export default function LawyerDetailsPage() {
                   </div>
                 )}
 
-                {/* Stats Cards */}
+                {}
                 <div className="grid grid-cols-3 gap-3 mb-6">
                   <div className="bg-[#1B2A4A]/[0.04] rounded-xl p-3 text-center">
                     <p className="text-xl font-bold text-[#1B2A4A]">
@@ -376,7 +376,7 @@ export default function LawyerDetailsPage() {
                   </div>
                 </div>
 
-                {/* Hire Button + Shortlist */}
+                {}
                 <div className="flex items-center gap-3">
                   {user?.role === "user" && (
                     <button
@@ -414,7 +414,7 @@ export default function LawyerDetailsPage() {
           </div>
         </motion.div>
 
-        {/* Additional Info Cards (Education, Languages, Experience, Achievements) */}
+        {}
         {(lawyer.experience > 0 ||
           (lawyer.education && lawyer.education.length > 0) ||
           (lawyer.languages && lawyer.languages.length > 0) ||
@@ -426,7 +426,7 @@ export default function LawyerDetailsPage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"
           >
-            {/* Experience */}
+            {}
             {lawyer.experience > 0 && (
               <div className="bg-white rounded-2xl border border-gray-100 p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -446,7 +446,7 @@ export default function LawyerDetailsPage() {
               </div>
             )}
 
-            {/* Education */}
+            {}
             {lawyer.education && lawyer.education.length > 0 && (
               <div className="bg-white rounded-2xl border border-gray-100 p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -470,7 +470,7 @@ export default function LawyerDetailsPage() {
               </div>
             )}
 
-            {/* Languages */}
+            {}
             {lawyer.languages && lawyer.languages.length > 0 && (
               <div className="bg-white rounded-2xl border border-gray-100 p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -494,7 +494,7 @@ export default function LawyerDetailsPage() {
               </div>
             )}
 
-            {/* Achievements */}
+            {}
             {lawyer.achievements && lawyer.achievements.length > 0 && (
               <div className="bg-white rounded-2xl border border-gray-100 p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -520,7 +520,7 @@ export default function LawyerDetailsPage() {
           </motion.div>
         )}
 
-        {/* Comments Section */}
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -585,7 +585,7 @@ export default function LawyerDetailsPage() {
             </div>
           )}
 
-          {/* Add Review (only for logged-in clients) */}
+          {}
           {user && user.role === "user" && (
             <div className="mt-6 pt-6 border-t border-gray-100">
               <p className="text-sm text-gray-500 mb-3">
@@ -594,7 +594,7 @@ export default function LawyerDetailsPage() {
                   : "Be the first to leave a review"}
               </p>
 
-              {/* Star Rating Selector */}
+              {}
               <div className="mb-3">
                 <StarRating value={reviewRating} onChange={setReviewRating} />
               </div>
@@ -653,7 +653,7 @@ export default function LawyerDetailsPage() {
         </motion.div>
       </div>
 
-      {/* Hire Modal */}
+      {}
       <HireModal
         lawyer={lawyer}
         isOpen={hireModalOpen}

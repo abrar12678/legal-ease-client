@@ -26,7 +26,7 @@ export default function ShortlistPage() {
         setShortlist(res.data.shortlist || []);
       }
     } catch {
-      // silently handle
+      
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,7 @@ export default function ShortlistPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">
           My Shortlist
@@ -105,7 +105,7 @@ export default function ShortlistPage() {
             >
               <div className="p-5">
                 <div className="flex items-start gap-4">
-                  {/* Avatar */}
+                  {}
                   <div className="w-14 h-14 rounded-xl bg-[#1B2A4A]/5 dark:bg-white/10 flex items-center justify-center text-[#1B2A4A] dark:text-white text-lg font-bold shrink-0 overflow-hidden">
                     {item.image ? (
                       <img
@@ -118,7 +118,7 @@ export default function ShortlistPage() {
                     )}
                   </div>
 
-                  {/* Info */}
+                  {}
                   <div className="flex-1 min-w-0">
                     <Link
                       href={`/lawyers/${item.lawyerId}`}
@@ -152,7 +152,7 @@ export default function ShortlistPage() {
                     </div>
                   </div>
 
-                  {/* Remove Button */}
+                  {}
                   <button
                     onClick={() => handleRemove(item.lawyerId, item.name)}
                     className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
@@ -162,7 +162,7 @@ export default function ShortlistPage() {
                   </button>
                 </div>
 
-                {/* Actions */}
+                {}
                 <div className="flex items-center gap-2 mt-4">
                   <Link
                     href={`/lawyers/${item.lawyerId}`}

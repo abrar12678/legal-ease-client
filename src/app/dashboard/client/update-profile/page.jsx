@@ -22,7 +22,7 @@ export default function UpdateProfilePage() {
   const [previewImage, setPreviewImage] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // Populate form from session data (no extra API call needed)
+  
   useEffect(() => {
     if (!isPending && user) {
       setFormData({
@@ -44,12 +44,12 @@ export default function UpdateProfilePage() {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Show local preview immediately
+    
     const reader = new FileReader();
     reader.onloadend = () => setPreviewImage(reader.result);
     reader.readAsDataURL(file);
 
-    // Upload to imgBB
+    
     setUploading(true);
     try {
       const imgData = new FormData();
@@ -67,7 +67,7 @@ export default function UpdateProfilePage() {
         setFormData((prev) => ({ ...prev, image: imageUrl }));
       }
     } catch (err) {
-      // silently fail — preview still works locally
+      
     } finally {
       setUploading(false);
     }
@@ -88,7 +88,7 @@ export default function UpdateProfilePage() {
       if (res.success) {
         toast.success("Profile updated successfully");
         setSaved(true);
-        // Refresh session so Navbar shows updated name
+        
         refetch();
         setTimeout(() => setSaved(false), 3000);
       } else {
@@ -117,7 +117,7 @@ export default function UpdateProfilePage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">Update Profile</h1>
         <p className="text-gray-500 mt-1">Edit your personal information and profile picture</p>
@@ -128,7 +128,7 @@ export default function UpdateProfilePage() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 max-w-2xl mx-auto"
       >
-        {/* Avatar Upload */}
+        {}
         <div className="flex flex-col items-center mb-8">
           <div className="relative group">
             <div className="w-32 h-32 rounded-2xl bg-[#1B2A4A]/5 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
@@ -158,9 +158,9 @@ export default function UpdateProfilePage() {
           <p className="text-xs text-gray-400 mt-3">Click to change profile photo</p>
         </div>
 
-        {/* Form */}
+        {}
         <div className="space-y-5">
-          {/* Full Name */}
+          {}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
               Full Name
@@ -177,7 +177,7 @@ export default function UpdateProfilePage() {
             </div>
           </div>
 
-          {/* Email (read-only) */}
+          {}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
               Email Address
@@ -194,7 +194,7 @@ export default function UpdateProfilePage() {
             <p className="text-xs text-gray-400 mt-1">Email cannot be changed</p>
           </div>
 
-          {/* Save Button */}
+          {}
           <button
             onClick={handleSave}
             disabled={saving || !formData.name.trim()}

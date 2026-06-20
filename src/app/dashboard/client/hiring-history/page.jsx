@@ -38,7 +38,7 @@ export default function UserHiringHistoryPage() {
           setHirings(mapped);
         }
       } catch {
-        // silently handle
+        
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -93,20 +93,20 @@ export default function UserHiringHistoryPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
+      {}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1B2A4A]">Hiring History</h1>
         <p className="text-gray-500 mt-1">Track all your hiring requests and their status</p>
       </div>
 
-      {/* Filters Bar */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl border border-gray-100 p-4"
       >
         <div className="flex flex-col sm:flex-row gap-3">
-          {/* Search */}
+          {}
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -117,7 +117,7 @@ export default function UserHiringHistoryPage() {
               className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1B2A4A]/20 focus:border-[#1B2A4A]/30"
             />
           </div>
-          {/* Status Filter */}
+          {}
           <div className="flex items-center gap-2">
             <Filter size={16} className="text-gray-400" />
             {["all", "pending", "accepted", "paid", "rejected"].map((s) => (
@@ -137,7 +137,7 @@ export default function UserHiringHistoryPage() {
         </div>
       </motion.div>
 
-      {/* Table */}
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -209,7 +209,7 @@ export default function UserHiringHistoryPage() {
             </tbody>
           </table>
         </div>
-        {/* Footer Count */}
+        {}
         <div className="px-6 py-3 border-t border-gray-100 bg-gray-50/50">
           <p className="text-xs text-gray-400">Showing {filtered.length} of {hirings.length} records</p>
         </div>

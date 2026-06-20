@@ -57,7 +57,7 @@ export default function Navbar() {
   const user = session?.user;
 
   useEffect(() => {
-    // Initialize dark mode from localStorage
+    
     const saved = localStorage.getItem("darkMode");
     if (saved === "true") {
       setDarkMode(true);
@@ -82,7 +82,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close dropdown when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -122,7 +122,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="w-8 h-8 bg-[#1B2A4A] rounded-lg flex items-center justify-center">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A843" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -136,7 +136,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Nav Links + Search + Auth */}
+          {}
           <div className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -152,7 +152,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Dashboard Dropdown */}
+            {}
             {user && (
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -196,7 +196,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Desktop: Search Bar */}
+          {}
           <div className="hidden md:flex items-center flex-1 max-w-xs mx-4">
             <form onSubmit={handleSearch} className="w-full relative">
               <Search
@@ -213,9 +213,9 @@ export default function Navbar() {
             </form>
           </div>
 
-          {/* Desktop: Auth Buttons + Dark Mode */}
+          {}
           <div className="hidden md:flex items-center gap-2">
-            {/* Dark Mode Toggle */}
+            {}
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
@@ -254,7 +254,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile: Hamburger */}
+          {}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 text-gray-600 hover:text-[#1B2A4A] transition-colors"
@@ -264,7 +264,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -275,7 +275,7 @@ export default function Navbar() {
             className="md:hidden overflow-hidden dark:bg-slate-800 bg-white border-t border-gray-100 dark:border-slate-700"
           >
             <div className="px-4 py-4 space-y-3">
-              {/* Mobile Search */}
+              {}
               <form onSubmit={handleSearch} className="relative">
                 <Search
                   size={16}
@@ -290,7 +290,7 @@ export default function Navbar() {
                 />
               </form>
 
-              {/* Mobile Nav Links */}
+              {}
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
@@ -306,7 +306,7 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              {/* Mobile Dashboard Links */}
+              {}
               {user && (
                 <>
                   <div className="border-t border-gray-100 pt-2">

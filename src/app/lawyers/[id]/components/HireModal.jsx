@@ -49,13 +49,13 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
-          {/* Overlay */}
+          {}
           <div
             className="absolute inset-0 bg-black/50"
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -64,7 +64,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
             className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
+            {}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
               <h3 className="text-lg font-bold text-[#1B2A4A]">
                 Confirm Hiring Request
@@ -77,9 +77,9 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
               </button>
             </div>
 
-            {/* Body */}
+            {}
             <div className="px-6 py-5">
-              {/* Lawyer Info */}
+              {}
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl mb-5">
                 {lawyer.image ? (
                   <div className="w-14 h-14 rounded-full overflow-hidden shrink-0">
@@ -107,7 +107,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
                 </div>
               </div>
 
-              {/* Info Note */}
+              {}
               <div className="flex items-start gap-3 p-3 bg-amber-50 rounded-lg mb-5">
                 <AlertCircle size={18} className="text-amber-600 shrink-0 mt-0.5" />
                 <p className="text-sm text-amber-800">
@@ -116,7 +116,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
                 </p>
               </div>
 
-              {/* Auth Check: Not logged in */}
+              {}
               {!user && (
                 <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg mb-5">
                   <User size={18} className="text-blue-600 shrink-0 mt-0.5" />
@@ -143,7 +143,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
                 </div>
               )}
 
-              {/* Auth Check: Wrong role */}
+              {}
               {user && user.role !== "user" && (
                 <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg mb-5">
                   <AlertCircle size={18} className="text-red-600 shrink-0 mt-0.5" />
@@ -155,7 +155,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
               )}
             </div>
 
-            {/* Footer */}
+            {}
             <div className="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3">
               <button
                 onClick={onClose}

@@ -35,7 +35,7 @@ export default function SignInPage() {
   const [showPwd, setShowPwd] = useState(false);
   const [error, setError] = useState("");
 
-  // Redirect if already logged in
+  
   useEffect(() => {
     if (session?.user) {
       const role = session.user.role || "user";
@@ -120,7 +120,7 @@ export default function SignInPage() {
         transition={{ duration: 0.4 }}
         className="w-full max-w-md"
       >
-        {/* Logo & Heading */}
+        {}
         <div className="text-center mb-8">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#1B2A4A]">
             <svg
@@ -144,10 +144,10 @@ export default function SignInPage() {
           </p>
         </div>
 
-        {/* Card */}
+        {}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
-            {/* Email */}
+            {}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-gray-700">
                 Email Address <span className="text-red-500">*</span>
@@ -164,7 +164,7 @@ export default function SignInPage() {
               </div>
             </div>
 
-            {/* Password */}
+            {}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-gray-700">
                 Password <span className="text-red-500">*</span>
@@ -189,7 +189,7 @@ export default function SignInPage() {
               </div>
             </div>
 
-            {/* Forgot Password Link */}
+            {}
             <div className="flex justify-end">
               <Link
                 href="/auth/forgot-password"
@@ -199,14 +199,14 @@ export default function SignInPage() {
               </Link>
             </div>
 
-            {/* Error Message */}
+            {}
             {error && (
               <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-sm text-red-600">
                 {error}
               </div>
             )}
 
-            {/* Submit Button */}
+            {}
             <button
               type="submit"
               disabled={loading}
@@ -241,7 +241,7 @@ export default function SignInPage() {
             </button>
           </form>
 
-          {/* Divider */}
+          {}
           <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-gray-200" />
             <span className="text-xs text-gray-400 uppercase tracking-wide whitespace-nowrap">
@@ -250,7 +250,7 @@ export default function SignInPage() {
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
-          {/* Google Button */}
+          {}
           <button
             onClick={handleGoogleSignIn}
             type="button"
@@ -260,7 +260,7 @@ export default function SignInPage() {
             Continue with Google
           </button>
 
-          {/* Sign Up Link */}
+          {}
           <p className="text-center text-sm text-gray-500 mt-6">
             Don&apos;t have an account?{" "}
             <Link
