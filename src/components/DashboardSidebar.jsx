@@ -18,12 +18,12 @@ import {
 } from "lucide-react";
 
 const SIDEBAR_LINKS = {
-  client: [
-    { label: "My Dashboard", href: "/dashboard/client", icon: LayoutDashboard },
-    { label: "Hiring History", href: "/dashboard/client/hiring-history", icon: ClipboardList },
-    { label: "My Shortlist", href: "/dashboard/client/shortlist", icon: Heart },
-    { label: "My Comments", href: "/dashboard/client/comments", icon: MessageSquare },
-    { label: "Update Profile", href: "/dashboard/client/update-profile", icon: UserCog },
+  user: [
+    { label: "My Dashboard", href: "/dashboard/user", icon: LayoutDashboard },
+    { label: "Hiring History", href: "/dashboard/user/hiring-history", icon: ClipboardList },
+    { label: "My Shortlist", href: "/dashboard/user/shortlist", icon: Heart },
+    { label: "My Comments", href: "/dashboard/user/comments", icon: MessageSquare },
+    { label: "Update Profile", href: "/dashboard/user/update-profile", icon: UserCog },
   ],
   lawyer: [
     { label: "My Dashboard", href: "/dashboard/lawyer", icon: LayoutDashboard },
@@ -38,11 +38,11 @@ const SIDEBAR_LINKS = {
   ],
 };
 
-export default function DashboardSidebar({ role = "client", isOpen, onClose }) {
+export default function DashboardSidebar({ role = "user", isOpen, onClose }) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;
-  const links = SIDEBAR_LINKS[role] || SIDEBAR_LINKS.client;
+  const links = SIDEBAR_LINKS[role] || SIDEBAR_LINKS.user;
 
   const handleSignOut = async () => {
     await signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } });

@@ -12,7 +12,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
   const user = session?.user;
   const [submitting, setSubmitting] = useState(false);
 
-  const canHire = user && user.role === "client";
+  const canHire = user && user.role === "user";
 
   const handleHire = async () => {
     if (!canHire) return;
@@ -144,7 +144,7 @@ export default function HireModal({ lawyer, isOpen, onClose }) {
               )}
 
               {/* Auth Check: Wrong role */}
-              {user && user.role !== "client" && (
+              {user && user.role !== "user" && (
                 <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg mb-5">
                   <AlertCircle size={18} className="text-red-600 shrink-0 mt-0.5" />
                   <p className="text-sm text-red-800">

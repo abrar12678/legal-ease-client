@@ -139,7 +139,7 @@ export default function LawyerDetailsPage() {
 
   // Fetch hired/shortlist status for logged-in users
   useEffect(() => {
-    if (!isPending && user?.role === "client" && params.id) {
+    if (!isPending && user?.role === "user" && params.id) {
       apiFetch(`/api/lawyers/${params.id}/hired-status`).then((res) => {
         if (res.success) {
           setIsHired(res.data.isHired);
@@ -150,7 +150,7 @@ export default function LawyerDetailsPage() {
   }, [isPending, user, params.id]);
 
   const handleToggleShortlist = async () => {
-    if (!user || user.role !== "client" || shortlistLoading) return;
+    if (!user || user.role !== "user" || shortlistLoading) return;
     setShortlistLoading(true);
     try {
       if (isShortlisted) {
@@ -378,7 +378,7 @@ export default function LawyerDetailsPage() {
 
                 {/* Hire Button + Shortlist */}
                 <div className="flex items-center gap-3">
-                  {user?.role === "client" && (
+                  {user?.role === "user" && (
                     <button
                       onClick={handleToggleShortlist}
                       disabled={shortlistLoading}
@@ -586,7 +586,7 @@ export default function LawyerDetailsPage() {
           )}
 
           {/* Add Review (only for logged-in clients) */}
-          {user && user.role === "client" && (
+          {user && user.role === "user" && (
             <div className="mt-6 pt-6 border-t border-gray-100">
               <p className="text-sm text-gray-500 mb-3">
                 {comments.length > 0

@@ -16,15 +16,15 @@ import {
 } from "lucide-react";
 
 const ROLE_COLORS = {
-  client: "bg-blue-100 text-blue-700",
+  user: "bg-blue-100 text-blue-700",
   lawyer: "bg-green-100 text-green-700",
   admin: "bg-purple-100 text-purple-700",
 };
 
-const ROLES = ["client", "lawyer", "admin"];
+const ROLES = ["user", "lawyer", "admin"];
 
 // Display role labels (DB values → display names)
-const ROLE_LABELS = { client: "Client", lawyer: "Lawyer", admin: "Admin" };
+const ROLE_LABELS = { user: "User", lawyer: "Lawyer", admin: "Admin" };
 
 function displayRole(role) {
   return ROLE_LABELS[role] || role;
@@ -157,7 +157,7 @@ export default function ManageUsersPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            {["all", "client", "lawyer", "admin"].map((r) => (
+            {["all", "user", "lawyer", "admin"].map((r) => (
               <button
                 key={r}
                 onClick={() => setRoleFilter(r)}

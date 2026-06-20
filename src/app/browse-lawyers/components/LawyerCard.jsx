@@ -11,7 +11,7 @@ export default function LawyerCard({ lawyer, index = 0 }) {
   const [isShortlisted, setIsShortlisted] = useState(lawyer.isShortlisted || false);
   const [shortlistLoading, setShortlistLoading] = useState(false);
   const { data: session } = useSession();
-  const isUser = session?.user?.role === "client";
+  const isUser = session?.user?.role === "user";
 
   const handleToggleShortlist = async (e) => {
     e.preventDefault();

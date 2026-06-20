@@ -87,7 +87,7 @@ export default function PaymentSuccessPage() {
 
         <div className="space-y-3">
           <Link
-            href="/dashboard/client/hiring-history"
+            href="/dashboard/user/hiring-history"
             className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-[#1B2A4A] text-white font-semibold rounded-xl hover:bg-[#243A5E] transition-colors text-sm"
           >
             View Hiring History

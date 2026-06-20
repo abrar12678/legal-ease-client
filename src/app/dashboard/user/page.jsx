@@ -137,7 +137,7 @@ export default function UserDashboardPage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <User size={14} />
-                <span className="capitalize">{user?.role || "client"}</span>
+                <span className="capitalize">{user?.role || "user"}</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <Calendar size={14} />

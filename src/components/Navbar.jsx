@@ -24,12 +24,12 @@ const NAV_LINKS = [
 ];
 
 const DASHBOARD_LINKS = {
-  client: [
-    { label: "My Dashboard", href: "/dashboard/client", icon: LayoutDashboard },
-    { label: "My Shortlist", href: "/dashboard/client/shortlist", icon: Heart },
-    { label: "Hiring History", href: "/dashboard/client/hiring-history", icon: User },
-    { label: "My Comments", href: "/dashboard/client/comments", icon: User },
-    { label: "Update Profile", href: "/dashboard/client/update-profile", icon: User },
+  user: [
+    { label: "My Dashboard", href: "/dashboard/user", icon: LayoutDashboard },
+    { label: "My Shortlist", href: "/dashboard/user/shortlist", icon: Heart },
+    { label: "Hiring History", href: "/dashboard/user/hiring-history", icon: User },
+    { label: "My Comments", href: "/dashboard/user/comments", icon: User },
+    { label: "Update Profile", href: "/dashboard/user/update-profile", icon: User },
   ],
   lawyer: [
     { label: "My Dashboard", href: "/dashboard/lawyer", icon: LayoutDashboard },
@@ -109,7 +109,7 @@ export default function Navbar() {
   };
 
   const dashboardItems = user?.role
-    ? DASHBOARD_LINKS[user.role] || DASHBOARD_LINKS.client
+    ? DASHBOARD_LINKS[user.role] || DASHBOARD_LINKS.user
     : [];
 
   return (
