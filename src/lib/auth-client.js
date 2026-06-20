@@ -9,11 +9,12 @@ export const { signIn, signUp, useSession, signOut } = authClient;
 
 /**
  * Custom authenticated fetch for calling the Express backend.
+ * Same pattern as HireLoop's protectedFetch.
  *
  * How it works:
- * 1. Calls /api/auth/get-session (Better Auth endpoint on Next.js side) to get the token
- * 2. Uses the Next.js rewrites to proxy /api/lawyers, /api/hirings, etc. to localhost:5000
- * 3. Attaches the session token as Bearer Authorization header
+ * 1. Calls /api/auth/get-session (Better Auth endpoint on Next.js side) to get the session token
+ * 2. Attaches the token as Bearer Authorization header
+ * 3. Backend's verifyToken middleware checks the token against the session collection in DB
  */
 export async function apiFetch(path, options = {}) {
   // Step 1: Get the session token from Better Auth
@@ -32,33 +33,31 @@ export async function apiFetch(path, options = {}) {
     // silently ignore — request will proceed without token
   }
 
-  // Step 2: Build the URL (uses Next.js rewrite → localhost:5000)
-  const url = `${path}`;
-
-  // Step 3: Build headers
+  // Step 2: Build headers
   const headers = {
     "Content-Type": "application/json",
-    ...((options.headers) || {}),
+    ...(options.headers || {}),
   };
 
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  // Step 4: Make the request
+  // Step 3: Build request config
   const config = {
     ...options,
     headers,
   };
 
-  // Body handling: if it's already a string, use it directly
+  // Body handling
   if (options.body && typeof options.body === "string") {
     config.body = options.body;
   } else if (options.body && typeof options.body === "object") {
     config.body = JSON.stringify(options.body);
   }
 
-  const response = await fetch(url, config);
+  // Step 4: Make the request
+  const response = await fetch(path, config);
   const data = await response.json();
   return data;
 }
